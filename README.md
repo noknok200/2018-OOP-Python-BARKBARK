@@ -6,6 +6,8 @@
 ## 1. 주제
 한국거래소(KRX)에서 주식정보를 받아와 모의 주식 게임 만들기
 
+참고 : [[Bloomberg] The Trading Game](https://www.bloomberg.com/features/2015-stock-chart-trading-game/)
+
 ## 2. 동기
 {위 주제를 선정한 동기를 작성하시오.}
 
