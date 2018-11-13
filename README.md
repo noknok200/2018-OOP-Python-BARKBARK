@@ -4,7 +4,9 @@
 ![](https://github.com/noknok200/2018-OOP-Python-BARKBARK/blob/master/euclid_japanese.png?raw=true)
 
 ## 1. 주제
-{주제를 여기에 작성하시오}
+한국거래소(KRX)에서 주식정보를 받아와 모의 주식 게임 만들기
+
+참고 : [[Bloomberg] The Trading Game](https://www.bloomberg.com/features/2015-stock-chart-trading-game/)
 
 ## 2. 동기
 {위 주제를 선정한 동기를 작성하시오.}
@@ -40,7 +42,6 @@
 
 ## 9. 기타
 
-<hr>
 
 #### readme 작성관련 참고하기 [바로가기](https://heropy.blog/2017/09/30/markdown/)
 
