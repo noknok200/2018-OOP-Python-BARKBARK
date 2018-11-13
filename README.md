@@ -19,7 +19,17 @@
 ## 6. 프로젝트 핵심
 
 ## 7. 구현에 필요한 라이브러리나 기술
-{socket, threading, pygame, requests, beautifulsoup, tkinker, datetime, queue, 소켓 통신, GUI 화면 구현, 스레딩}
+* socket
+* threading
+* pygame
+* requests
+* beautifulsoup
+* tkinker
+* datetime
+* queue
+* 소켓 통신
+* GUI 화면 구현
+* 스레딩
 
 ## 8. **분업 계획**
 
