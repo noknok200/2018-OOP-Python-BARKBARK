@@ -40,7 +40,6 @@
 
 ## 9. 기타
 
-<hr>
 
 #### readme 작성관련 참고하기 [바로가기](https://heropy.blog/2017/09/30/markdown/)
 
