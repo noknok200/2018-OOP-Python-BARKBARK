@@ -32,6 +32,7 @@
 * pygame
 * beautifulsoup
 * tkinker(GUI 화면 구현)
+* ggplot으로 그래프 그려도 될 거 같은데
 
 ## 8. **분업 계획**
 
