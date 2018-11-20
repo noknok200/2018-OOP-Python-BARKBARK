@@ -9,11 +9,11 @@ var = 1
 ex1 = 1
 var1 = 3
 
-d = {'x': np.random.normal(ex, var, 1000),
-     'y': np.random.normal(ex1, var1, 1000)}
+d = np.random.normal(ex, var, 1000)
 
-df = pd.DataFrame(d)
-df.boxplot(column=['x', 'y'])
+df = pd.DataFrame({'pig': [1, 2, 3, 4]}, index=[
+                  1000, 2000, 3000, 4000])
+df.plot.line()
 plot.show()
 
 # 참고한 페이지: http://uncoded.tistory.com/11
