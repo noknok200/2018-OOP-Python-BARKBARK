@@ -14,6 +14,8 @@ d = {'x': np.random.normal(ex, var, 1000),
 
 df = pd.DataFrame(d)
 df.boxplot(column=['x', 'y'])
-plot.show()
+
+def show_plot():
+     plot.show()
 
 # 참고한 페이지: http://uncoded.tistory.com/11
