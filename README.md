@@ -52,6 +52,17 @@
 
 ## 9. 기타
 
+main.py : 메인(이걸 실행시킨다)
+
+Game.py : 게임 관련된거 합치기
+
+Plot_display.py : 그래프 출력
+
+Multiplay.py : 다른 플레이어의 구매/판매 시점 받아오기
+
+Score.py : 점수계산
+
+
 
 #### readme 작성관련 참고하기 [바로가기](https://heropy.blog/2017/09/30/markdown/)
 
