@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 # marcap_utils.py - 시가총액 데이터를 위한 유틸함수
-
+"""
+경고! 데이터를 받아오는 코드이므로 수정하지 말 것
+(필요시 복제본 생성)
+"""
 from datetime import datetime
 import numpy as np
 import pandas as pd
