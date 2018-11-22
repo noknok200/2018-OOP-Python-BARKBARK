@@ -14,6 +14,6 @@ d = np.random.normal(ex, var, 1000)
 df = pd.DataFrame({'pig': [1, 2, 3, 4]}, index=[
                   1000, 2000, 3000, 4000])
 df.plot.line()
-plot.show()
+# plot.show()
 
 # 참고한 페이지: http://uncoded.tistory.com/11

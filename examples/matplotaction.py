@@ -35,4 +35,5 @@ def animate(i):
 anim = ani.FuncAnimation(
     fig, animate, init_func=init, frames=200, interval=20, blit=True)
 
+
 plt.show()
