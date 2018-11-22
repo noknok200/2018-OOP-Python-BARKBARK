@@ -25,4 +25,5 @@ def animate(i):
     ax1.clear()
     ax1.plot(df_stock['Close'][i:i+100])
 
-ani = animation.F
+ani = animation.FuncAnimation(fig, animate, interval=100)
+plt.show()
