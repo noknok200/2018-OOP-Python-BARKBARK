@@ -24,65 +24,15 @@ print('Start Chat - Server')
 client_list = []
 client_id = []
 
-def find_teacher(name):
-    with requests.Session() as s:
-        # 로그인 페이지를 가져와서 html 로 만들어 파싱을 시도한다.
-        first_page = s.get('https://go.sasa.hs.kr')
-        html = first_page.text
-        soup = bs(html, 'html.parser')
+def draw_board():
+    window = tkinter.Tk()
+    window.title("Time_Table")
+    window.geometry("1285x673+100+10")
+    window.resizable(False, False)
 
-        # cross-site request forgery 방지용 input value 를 가져온다.
-        # https://ko.wikipedia.org/wiki/사이트_간_요청_위조
-        csrf = soup.find('input', {'name': 'csrf_test_name'})
+    gamestart!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-        # 두개의 dictionary 를 합친다.
-        LOGIN_INFO.update({'csrf_test_name': csrf['value']})
-
-        # 만들어진 로그인 데이터를 이용해서, 로그인을 시도한다.
-        login_req = s.post('https://go.sasa.hs.kr/auth/login/', data=LOGIN_INFO)
-        get_timetable = s.get('https://go.sasa.hs.kr/timetable/search_new/teacher?target='+name, data={'target': ''}).text
-        timetable_soup = bs(get_timetable, 'html.parser')
-        qmp = timetable_soup.select('script')
-        qmp = str(qmp).split('\n')
-        qmp = list(qmp)
-        qmp2 = []
-        qmp3 = []
-        qoard = [['','','','','','','','','','','',''],['','','','','','','','','','','',''],['','','','','','','','','','','',''],['','','','','','','','','','','',''],['','','','','','','','','','','',''],['','','','','','','','','','','','']]
-        for i in qmp:
-            if "tar = " in i:
-                qmp2.append(i)
-            if "$('#time" in i:
-                qmp2.append(i)
-
-        for i in qmp2:
-            if "tar = " in i:
-                i = i.split('"')[1].replace("<br />"," / ").split(" / ")[0:3]
-                qmp3.append(i)
-            if "$('#time" in i:
-                if "append(tar)" in i:
-                    i = i.split("'")[1].replace("#time","").split("-")
-                    qmp3.extend(i)
-                else:
-                    i = i.split("'")[4:0:-3]
-                    i[0] = i[0].replace(">","").replace('</button");',"")
-                    qre_i = i[1].replace("#time", "").split("-")
-                    i[1] = qre_i[0]
-                    i.append(qre_i[1])
-                    qmp3.extend(i)
-        for i in range(0, len(qmp3), 3):
-            qoard[int(qmp3[i+1])-1][int(qmp3[i+2])-1] = qmp3[i]
-        return qoard
-
-def get_html(url):
-    """
-    웹 사이트 주소를 입력 받아, html tag 를 읽어드려 반환한다.
-    :param url: parsing target web url
-    :return: html tag
-    """
-    response = requests.get(url)
-    response.raise_for_status()
-
-    return response.text
+    window.mainloop()
 
 # 서버로 부터 메시지를 받는 함수 | Thread 활용
 def receive(client_sock):
@@ -105,16 +55,8 @@ def receive(client_sock):
 
         # 데이터가 들어왔다면 접속하고 있는 모든 클라이언트에게 메시지 전송
         for sock in client_list:
-            if sock == client_sock:
-                for i in range(0,6):
-                    for j in range(0,12):
-                        if type(qoard[i][j]) == list:
-                            qoard[i][j] = qoard[i][j][2]
-                        elif qoard[i][j] == "":
-                            qoard[i][j] = "-"
-                for i in range(0,6):
-                    strr = ",".join(qoard[i])
-                    sock.send(bytes(strr, 'UTF-8'))
+            if sock != client_sock:
+                sock.send(bytes(data, 'UTF-8'))
 
     # 메시지 송발신이 끝났으므로, 대상인 client는 목록에서 삭제.
     client_id.remove(client_sock.fileno())
@@ -154,7 +96,7 @@ def connection():
 thread_server = threading.Thread(target=connection, args=())
 thread_server.start()
 
-print("============== Chat Server ==============")
+draw_board() ############################game start!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 thread_server.join()
 server_sock.close()
