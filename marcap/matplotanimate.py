@@ -14,16 +14,18 @@ import time
 # print('row count:', len(df))
 # df.head()
 
-fig=plt.figure()
-ax1=fig.add_subplot(1,1,1) 
+fig = plt.figure()
+ax1 = fig.add_subplot(1, 1, 1)
 # 삼성전자(005930), 시가총액 비중의 변화
 code = '005930'
-df_stock = marcap_date_range('2015-01-01', '2018-12-31', code)
+df_stock = marcap_date_range('2015-01-01', '2015-8-20', code)
 #df_stock['MarcapRatio'].plot(figsize=(16, 6))
+
 
 def animate(i):
     ax1.clear()
     ax1.plot(df_stock['Close'][i:i+100])
+
 
 ani = animation.FuncAnimation(fig, animate, interval=100)
 plt.show()
