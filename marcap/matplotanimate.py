@@ -1,6 +1,5 @@
-
-from marcap_utils import marcap_date
-from marcap_utils import marcap_date_range
+from marcap.marcap_utils import marcap_date
+from marcap.marcap_utils import marcap_date_range
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import time
@@ -9,7 +8,7 @@ import time
 # plt.plot([1, 4, 9, 16])
 # plt.show()
 
-# df = marcap_date_range('2017-01-01', '2018-10-31')
+df = marcap_date_range('2017-01-01', '2018-10-31')
 
 # print('row count:', len(df))
 # df.head()
