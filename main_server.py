@@ -1,4 +1,14 @@
 #client 들의 위치 데이터를 받으면서 game.py를 실행하는 함수, 이 파일이 메인이 될 예정
+#데이터 처리 법
+'''
+""
+
+
+
+
+
+
+'''
 import game
 import socket
 import threading
