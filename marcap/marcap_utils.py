@@ -45,7 +45,7 @@ def marcap_date_range(start, end, code=None):
     df_list = []
     for year in range(start.year, end.year + 1):
         try:
-            csv_file = 'marcap/data/marcap-%s.csv.gz' % (year)
+            csv_file = 'marcap/data/marcap-%s.csv.gz' % (year) #'C:/Users/user/Desktop/NOAH/2학년/2학기/정보/py-project/marcap/data/marcap-%s.csv.gz'
             df = pd.read_csv(csv_file, dtype={'Code':str}, parse_dates=['Date'])
             df_list.append(df)
         except Exception as e:
@@ -57,3 +57,5 @@ def marcap_date_range(start, end, code=None):
       df_merged = df_merged[code == df_merged['Code']]  
     df_merged.reset_index(drop=True, inplace=True)
     return df_merged
+
+marcap_date_range('2018-01-01','2018-12-31','005930')

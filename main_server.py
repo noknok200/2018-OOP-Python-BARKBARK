@@ -1,32 +1,19 @@
-#https://docs.google.com/presentation/d/1oIsEvFQqJk6LRw7TrZeQx_m2LerOJj5FndgTNMJhFHc/edit#slide=id.p 참고
+#client 들의 위치 데이터를 받으면서 game.py를 실행하는 함수, 이 파일이 메인이 될 예정
+import game
 import socket
 import threading
-from bs4 import BeautifulSoup as bs  # parsing library
 
-# 서버의 설정값을 저장
-myip = '10.171.36.218'
+myip = ''
 myport = 50000
 address = (myip, myport)
 
-# 서버를 연다.
 server_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server_sock.bind(address)
 server_sock.listen()
-print('Start Game - Server')
 
 # 접속한 클라이언트들을 저장할 공간
 client_list = []
 client_id = []
-
-def draw_board():
-    window = tkinter.Tk()
-    window.title("Time_Table")
-    window.geometry("1285x673+100+10")
-    window.resizable(False, False)
-
-    #gamestart!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-    window.mainloop()
 
 # 서버로 부터 메시지를 받는 함수 | Thread 활용
 def receive(client_sock):
@@ -62,7 +49,6 @@ def receive(client_sock):
     print('#----------------------------#')
     return 0
 
-
 # 연결 수립용 함수 | Thread 활용
 def connection():
     global client_list
@@ -85,13 +71,11 @@ def connection():
         thread_recv = threading.Thread(target=receive, args=(client_sock,))
         thread_recv.start()
 
-
 # 연결 수립용 스레드 생성 및 실행.
 thread_server = threading.Thread(target=connection, args=())
 thread_server.start()
 
-draw_board() ############################game start!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+game_start() ############################game start!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 thread_server.join()
 server_sock.close()
-
