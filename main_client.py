@@ -1,9 +1,7 @@
-# https://docs.google.com/presentation/d/1oIsEvFQqJk6LRw7TrZeQx_m2LerOJj5FndgTNMJhFHc/edit#slide=id.p 참고
+#server에 위치 데이터를 주고 server에서 위치데이터를 받으면서 game.py를 실행하는 함수, 이 파일이 메인이 될 예정
+import game
 import socket
 import threading
-import requests  # 웹 접속 관련 라이브러리
-from bs4 import BeautifulSoup as bs  # parsing library
-import tkinter
 
 # 접속할 서버의 정보
 server_ip = '10.171.36.XXX'
@@ -14,16 +12,6 @@ address = (server_ip, server_port)
 mysock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 mysock.connect(address)
 print("connection complete")
-
-def draw_board():
-    window = tkinter.Tk()
-    window.title("Time_Table")
-    window.geometry("1285x673+100+10")
-    window.resizable(False, False)
-
-    gamestart!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-    window.mainloop()
 
 # 서버로부터 메시지를 받아, 출력하는 함수.
 def receive():
@@ -43,7 +31,6 @@ def receive():
 
     print('소켓의 읽기 버퍼를 닫습니다.')
     mysock.shutdown(socket.SHUT_RD)
-
 
 # 서버에게 메시지를 발송하는 함수 | Thread 활용
 def main_thread():
@@ -68,7 +55,6 @@ def main_thread():
         except ConnectionError:
             break
 
-
 # 메시지 보내는 스레드 시작
 thread_main = threading.Thread(target=main_thread, args=())
 thread_main.start()
@@ -76,10 +62,9 @@ thread_main.start()
 # 메시지를 받고, 보내는 스레드가 종료되길 기다림
 thread_main.join()
 
-draw_board()############################################# 게임 시작
+game_start()############################################# 게임 시작
 
 # 스레드가 종료되면, 열어둔 소켓을 닫는다.
 mysock.close()
 print('소켓을 닫습니다.')
 print('클라이언트 프로그램이 정상적으로 종료되었습니다.')
-
