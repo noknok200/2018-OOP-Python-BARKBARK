@@ -22,10 +22,15 @@ latest_stocks = df_stock.iloc[-1]['Stocks'] # 범위 마지막날 주식수(기�
 
 df_stock['Adj Close'] = df_stock['Close'] * (df_stock['Stocks'] / latest_stocks) # 수정종가
 
+
 def animate(i):
     ax1.clear()
     ax1.plot(df_stock['Adj Close'][i:i+100])
+    bought=df_stock['Adj Close'][i+50] #구매지점
     ax1.plot(range(i,i+100),df_stock['Adj Close'][i+100]*points,color='red') #가장 마지막 가격을 선으로 나타냄
+    ax1.plot(range(i,i+100),bought*points,color='blue')
+    
 
-ani = animation.FuncAnimation(fig, animate, interval=100)
+
+ani = animation.FuncAnimation(fig, animate, interval=100) #화면 실행
 plt.show()
