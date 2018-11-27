@@ -28,10 +28,12 @@ df_stock['Adj Close'] = df_stock['Close'] * \
 def animate(i):
     ax1.clear()
     ax1.plot(df_stock['Adj Close'][i:i+100])
-    bought = df_stock['Adj Close'][i+50]  # 구매지점
-    # 가장 마지막 가격을 선으로 나타냄
-    ax1.plot(range(i, i+100), df_stock['Adj Close'][i+100]*points, color='red')
-    ax1.plot(range(i, i+100), bought*points, color='blue')
+    bought=df_stock['Adj Close'][i+50] #구매지점
+    ax1.plot(range(i,i+100),df_stock['Adj Close'][i+100]*points,color='red') #가장 마지막 가격을 선으로 나타냄
+    ax1.plot(range(i,i+100),bought*points,color='blue')
+    for _ in len(player_list) :
+        ax1.plot(range(i,i+100),player_list[_][0],)
+    
 
 
 ani = animation.FuncAnimation(fig, animate, interval=100)
