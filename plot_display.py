@@ -10,8 +10,9 @@ import pandas as pd
 def loader():
     code = '005930'
     stock = marcap_date_range('2015-01-01', '2015-12-31', code)['Close']
-    empty = pd.Series([stock[0] for _ in range(100)])
-    return 2015, empty.append(stock, ignore_index=True)
+    front = pd.Series([float('nan') for _ in range(100)])
+    back = pd.Series([float('nan') for _ in range(100)])
+    return 2015, front.append(stock, ignore_index=True).append(back, ignore_index=True)
 
 
 def plotter(y, stock_list):
@@ -22,19 +23,19 @@ def plotter(y, stock_list):
     datelist = []
 
     for i in range(len(stock_list)):
-        d = relativedelta(day=i)
+        d = relativedelta(days=i)
         datelist.append(dates_init + d)
 
-    fmt = md.DateFormatter("%m")
-    ax.xaxis_date()
-    ax.xaxis.set_major_formatter(fmt)
-    fig.autofmt_xdate()
+    ax.set
 
     # print(datelist)
 
     def animate(i):
-        if i < len(stock_list) - 100:
+        if i < len(stock_list):
             ax.clear()
+            now = datelist[i]
+
+            plot.title("Now: " + str(now))
             ax.plot(datelist[i:i+100], stock_list[i:i+100])
 
     ani = animation.FuncAnimation(fig, animate, interval=100)
