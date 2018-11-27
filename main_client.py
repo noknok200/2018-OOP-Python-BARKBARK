@@ -46,10 +46,7 @@ def receive():
     mysock.shutdown(socket.SHUT_RD)
 
 def keypress():
-    try:
-        mysock.send(bytes(my_place, 'UTF-8'))  # 서버에 메시지를 전송
-    except ConnectionError:
-        break
+    mysock.send(bytes(my_place, 'UTF-8'))  # 서버에 메시지를 전송
 
 # 서버에게 메시지를 발송하는 함수 | Thread 활용
 def main_thread():
