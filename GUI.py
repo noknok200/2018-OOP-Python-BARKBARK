@@ -13,7 +13,7 @@ def screen():
 
 window = tkinter.Tk()
 window.title("Game_Table") #Table
-window.geometry("1285x673+100+10") #size
+window.geometry("0x0+100+10") #size
 window.resizable(False, False)
 
 screen()
