@@ -1,5 +1,5 @@
-from marcap.marcap_utils import marcap_date
-from marcap.marcap_utils import marcap_date_range
+from marcap_utils import marcap_date
+from marcap_utils import marcap_date_range
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import time
