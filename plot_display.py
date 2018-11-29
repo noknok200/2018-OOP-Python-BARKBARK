@@ -1,4 +1,5 @@
 from marcap.marcap_utils import marcap_date_range
+import matplotlib as mpl
 from matplotlib import pyplot as plot
 from matplotlib import animation
 import matplotlib.dates as md
@@ -10,12 +11,12 @@ import pandas as pd
 def loader():
     code = '005930'
     stock = marcap_date_range('2015-01-01', '2015-12-31', code)['Close']
-    front = pd.Series([float('nan') for _ in range(100)])
-    back = pd.Series([float('nan') for _ in range(100)])
-    return 2015, front.append(stock, ignore_index=True).append(back, ignore_index=True)
+    front = pd.Series([stock[0] for _ in range(100)])
+    return 2015, front.append(stock, ignore_index=True)
 
 
 def plotter(y, stock_list):
+    mpl.rcParams['toolbar'] = 'None'
     fig = plot.figure()
     ax = fig.add_subplot(1, 1, 1)
 
@@ -26,19 +27,17 @@ def plotter(y, stock_list):
         d = relativedelta(days=i)
         datelist.append(dates_init + d)
 
-    ax.set
-
     # print(datelist)
 
     def animate(i):
-        if i < len(stock_list):
+        if i < len(stock_list) - 100:
             ax.clear()
             now = datelist[i]
 
             plot.title("Now: " + str(now))
-            ax.plot(datelist[i:i+100], stock_list[i:i+100])
+            ax.plot(stock_list[i:i+100])
 
-    ani = animation.FuncAnimation(fig, animate, interval=100)
+    ani = animation.FuncAnimation(fig, animate, interval=50)
     plot.show()
 
 
