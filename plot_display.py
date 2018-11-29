@@ -17,6 +17,8 @@ def loader():
 
 def plotter(y, stock_list):
     mpl.rcParams['toolbar'] = 'None'
+    plot.style.use(['dark_background'])
+
     fig = plot.figure()
     ax = fig.add_subplot(1, 1, 1)
 
@@ -27,17 +29,14 @@ def plotter(y, stock_list):
         d = relativedelta(days=i)
         datelist.append(dates_init + d)
 
-    # print(datelist)
-
     def animate(i):
         if i < len(stock_list) - 100:
             ax.clear()
-            now = datelist[i]
-
-            plot.title("Now: " + str(now))
+            now = str(datelist[i]).split()[0]
+            plot.title(now)
             ax.plot(stock_list[i:i+100])
 
-    ani = animation.FuncAnimation(fig, animate, interval=50)
+    ani = animation.FuncAnimation(fig, animate, interval=100)
     plot.show()
 
 
