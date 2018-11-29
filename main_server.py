@@ -33,7 +33,6 @@ def receive(client_sock):
         try:
             data = client_sock.recv(1024)
             name = data.decode('UTF-8')
-            qoard = find_teacher(name)
         except ConnectionError:
             print("{}와 연결이 끊겼습니다. #code1".format(client_sock.fileno()))
             break
