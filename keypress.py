@@ -5,12 +5,12 @@ import threading
 import keyboard
 import tkinter
 
-def keypress(self):  #self
+def key_pressed(self):  #self
     print("Click")
 
 def main_thread():
     root = tkinter.Tk()
-    root.bind_all('<Key>', keypress)
+    root.bind_all('<Key>', key_pressed)
     root.withdraw()
     root.mainloop()
 
