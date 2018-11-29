@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # marcap_utils.py - 시가총액 데이터를 위한 유틸함수
+#https://datascienceschool.net/view-notebook/d0b1637803754bb083b5722c9f2209d0/    matplotlib 라인 스타일 바꾸기
 """
 경고! 데이터를 받아오는 코드이므로 수정하지 말 것
 (필요시 복제본 생성)
@@ -45,7 +46,7 @@ def marcap_date_range(start, end, code=None):
     df_list = []
     for year in range(start.year, end.year + 1):
         try:
-            csv_file = 'marcap/data/marcap-%s.csv.gz' % (year) #'C:/Users/user/Desktop/NOAH/2학년/2학기/정보/py-project/marcap/data/marcap-%s.csv.gz'
+            csv_file = 'marcap/data/marcap-%s.csv.gz' % (year)
             df = pd.read_csv(csv_file, dtype={'Code':str}, parse_dates=['Date'])
             df_list.append(df)
         except Exception as e:
