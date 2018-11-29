@@ -12,7 +12,6 @@ code = '005930'
 #df_stock['MarcapRatio'].plot(figsize=(16, 6))
 df_stock = marcap_date_range('2016-01-01', '2018-12-31', code)
 
-
 points = np.ones(100)
 
 '''
@@ -30,6 +29,9 @@ stock_data = df_stock['Adj Close']
 '''구매가 및 판매가'''
 price_buy = 0
 price_sell = 0
+state = '매수대기' #초기 매수대기
+asset = 1e8 #초기 자본
+
 def animate(i):
     ax1.clear()
     ax1.plot(stock_data[i:i+100])
@@ -38,15 +40,17 @@ def animate(i):
     '''
     player가 구매한 경우 
     '''
-    if state = '매수대기' :
+
+    if global state = '매수대기' :
         if key_clicked() :
             global price_buy=stock_data[i+100] #현재가로 매수
             state = '매도대기' #매도대기 상태로 변경
             print(state)
 
-    elif state='매도대기' :
+    elif global state='매도대기' :
         if key_clicked() :
             global price_sell=stock_data[i+100] #매도 대기중에 버튼을 누르면 현재가로 매도
+            score = cal_asset(asset, price_buy, price_sell) #자본 계산
             state = '매수대기' #매수대기 상태로 변경
             print(state)
 
