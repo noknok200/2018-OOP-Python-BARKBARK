@@ -45,7 +45,7 @@ def receive():
     print('소켓의 읽기 버퍼를 닫습니다.')
     mysock.shutdown(socket.SHUT_RD)
 
-def keypress():
+def keypress(self):
     mysock.send(bytes(my_place, 'UTF-8'))  # 서버에 메시지를 전송
 
 # 서버에게 메시지를 발송하는 함수 | Thread 활용
