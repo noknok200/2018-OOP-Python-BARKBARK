@@ -37,6 +37,11 @@ asset = 1e8 #초기 자본
 
 
 def animate(t):
+    global state
+    global price_buy
+    global price_sell
+    global asset
+    
     ax1.clear()
     ax1.plot(stock_data[t:t+100])
     ax1.plot(range(t,t+100),stock_data[t+100]*points,color='red') #가장 마지막 가격을 선으로 나타냄
@@ -47,14 +52,14 @@ def animate(t):
     if state == '매수대기' :
         if keypress.key_pressed() :
             price_buy = stock_data[t+100] #현재가로 매수
-            global state = '매도대기' #매도대기 상태로 변경
+            state = '매도대기' #매도대기 상태로 변경
             print(state)
 
     elif state == '매도대기' :
         if keypress.key_pressed() :
-            global price_sell=stock_data[t+100] #매도 대기중에 버튼을 누르면 현재가로 매도
-            global asset = cal_asset(asset, price_buy, price_sell) #자본 계산
-            global state = '매수대기' #매수대기 상태로 변경
+            price_sell=stock_data[t+100] #매도 대기중에 버튼을 누르면 현재가로 매도
+            asset = cal_asset(asset, price_buy, price_sell) #자본 계산
+            state = '매수대기' #매수대기 상태로 변경
             print(state)
             print(asset)
 
