@@ -45,14 +45,14 @@ def animate(t):
     if global state = '매수대기' :
         if key_clicked() :
             global price_buy=stock_data[t+100] #현재가로 매수
-            state = '매도대기' #매도대기 상태로 변경
+            global state = '매도대기' #매도대기 상태로 변경
             print(state)
 
     elif global state='매도대기' :
         if key_clicked() :
             global price_sell=stock_data[t+100] #매도 대기중에 버튼을 누르면 현재가로 매도
-            score = cal_asset(asset, price_buy, price_sell) #자본 계산
-            state = '매수대기' #매수대기 상태로 변경
+            global asset = cal_asset(asset, price_buy, price_sell) #자본 계산
+            global state = '매수대기' #매수대기 상태로 변경
             print(state)
 
         ax1.plot(range(t,t+100),price_buy*points,color='blue') #매도대기 상태에서는 현재 얼마에 매수하였는지 표시
