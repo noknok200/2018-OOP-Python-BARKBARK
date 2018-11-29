@@ -7,6 +7,7 @@ import tkinter
 
 def key_pressed(self):  #self
     print("Click")
+    return True
 
 def main_thread():
     root = tkinter.Tk()

@@ -6,6 +6,7 @@ import time
 import numpy as np
 
 from calculate_asset import cal_asset
+import keypress
 
 fig = plt.figure()
 ax1 = fig.add_subplot(1, 1, 1)
@@ -43,18 +44,19 @@ def animate(t):
     '''
     player가 구매한 경우 
     '''
-    if global state == '매수대기' :
-        if key_clicked() :
-            global price_buy=stock_data[t+100] #현재가로 매수
+    if state == '매수대기' :
+        if keypress.key_pressed() :
+            price_buy = stock_data[t+100] #현재가로 매수
             global state = '매도대기' #매도대기 상태로 변경
             print(state)
 
-    elif global state == '매도대기' :
-        if key_clicked() :
+    elif state == '매도대기' :
+        if keypress.key_pressed() :
             global price_sell=stock_data[t+100] #매도 대기중에 버튼을 누르면 현재가로 매도
             global asset = cal_asset(asset, price_buy, price_sell) #자본 계산
             global state = '매수대기' #매수대기 상태로 변경
             print(state)
+            print(asset)
 
         ax1.plot(range(t,t+100),price_buy*points,color='blue') #매도대기 상태에서는 현재 얼마에 매수하였는지 표시
 
