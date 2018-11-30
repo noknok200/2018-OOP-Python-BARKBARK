@@ -8,6 +8,8 @@ matlib.pyplot에서 띄운 figure에 keypress를 바인드 함+ 키를 누를떄
 from __future__ import print_function
 import sys
 import numpy as np
+import matplotlib
+matplotlib.use('gtkagg')
 import matplotlib.pyplot as plt
 
 
