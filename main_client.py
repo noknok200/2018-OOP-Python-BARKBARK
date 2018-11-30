@@ -14,6 +14,7 @@ import socket
 import threading
 import keyboard
 import tkinter
+import* game
 
 # 접속할 서버의 정보
 server_ip = '10.171.36.XXX'

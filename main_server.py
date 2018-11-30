@@ -12,6 +12,7 @@
 import game
 import socket
 import threading
+import* game
 
 myip = ''
 myport = 50000
