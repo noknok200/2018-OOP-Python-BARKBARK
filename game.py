@@ -6,7 +6,7 @@ import time
 import numpy as np
 
 from calculate_asset import cal_asset
-import keypress
+import keypress_mac
 
 fig = plt.figure()
 ax1 = fig.add_subplot(1, 1, 1)
@@ -41,7 +41,7 @@ def animate(t):
     global price_buy
     global price_sell
     global asset
-    
+
     ax1.clear()
     ax1.plot(stock_data[t:t+100])
     ax1.plot(range(t,t+100),stock_data[t+100]*points,color='red') #가장 마지막 가격을 선으로 나타냄

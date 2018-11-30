@@ -1,9 +1,7 @@
-#그냥 부분적으로 코드를 넣어서 연습하는 py
-#아무 의미 없다.
-
 import threading
 import keyboard
 import tkinter
+from pynput.keyboard import Key, Listener
 
 def key_pressed(self):  #self
     print("Click")
