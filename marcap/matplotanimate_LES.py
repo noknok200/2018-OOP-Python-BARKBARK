@@ -37,11 +37,12 @@ asset = 1e8 #초기 자본
 
 
 def animate(t):
+    global t_time
+    t_time = t
     global state
     global price_buy
     global price_sell
     global asset
-
     ax1.clear()
     ax1.plot(stock_data[t:t+100])
     ax1.plot(range(t,t+100),stock_data[t+100]*points,color='red') #가장 마지막 가격을 선으로 나타냄
