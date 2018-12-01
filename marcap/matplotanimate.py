@@ -12,7 +12,7 @@ ax1 = fig.add_subplot(1, 1, 1)
 # 삼성전자(005930), 시가총액 비중의 변화
 code = '005930'
 #df_stock['MarcapRatio'].plot(figsize=(16, 6))
-df_stock = marcap_date_range('2016-01-01', '2018-12-31', code)
+df_stock = marcap_date_range('2018-01-01', '2018-12-31', code)
 
 points = np.ones(100)
 
@@ -44,20 +44,20 @@ def animate(t):
     player가 구매한 경우 
     '''
 
-    if global state = '매수대기' :
-        if key_clicked() :
-            global price_buy=stock_data[t+100] #현재가로 매수
-            global state = '매도대기' #매도대기 상태로 변경
-            print(state)
-
-    elif global state='매도대기' :
-        if key_clicked() :
-            global price_sell=stock_data[t+100] #매도 대기중에 버튼을 누르면 현재가로 매도
-            global asset = cal_asset(asset, price_buy, price_sell) #자본 계산
-            global state = '매수대기' #매수대기 상태로 변경
-            print(state)
-
-        ax1.plot(range(t,t+100),price_buy*points,color='blue') #매도대기 상태에서는 현재 얼마에 매수하였는지 표시
+    # if global state = '매수대기' :
+    #     if key_clicked() :
+    #         global price_buy=stock_data[t+100] #현재가로 매수
+    #         global state = '매도대기' #매도대기 상태로 변경
+    #         print(state)
+    #
+    # elif global state='매도대기' :
+    #     if key_clicked() :
+    #         global price_sell=stock_data[t+100] #매도 대기중에 버튼을 누르면 현재가로 매도
+    #         global asset = cal_asset(asset, price_buy, price_sell) #자본 계산
+    #         global state = '매수대기' #매수대기 상태로 변경
+    #         print(state)
+    #
+    #     ax1.plot(range(t,t+100),price_buy*points,color='blue') #매도대기 상태에서는 현재 얼마에 매수하였는지 표시
 
     # for _ in len(player_list) :
     #     ax1.plot(range(i,i+100),player_list[_][0],)
