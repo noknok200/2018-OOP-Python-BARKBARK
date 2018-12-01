@@ -11,6 +11,7 @@ import pandas as pd
 def loader():
     code = '005930'
     stock = marcap_date_range('2015-01-01', '2015-12-31', code)['Close']
+    print(len(stock))
     front = pd.Series([stock[0] for _ in range(100)])
     return 2015, front.append(stock, ignore_index=True)
 
@@ -21,13 +22,16 @@ def plotter(y, stock_list):
 
     fig = plot.figure()
     ax = fig.add_subplot(1, 1, 1)
+    ax.get_xaxis().set_visible(False)
 
     dates_init = datetime.datetime(2015, 1, 1)
     datelist = []
 
-    for i in range(len(stock_list)):
+    for i in range(365):
         d = relativedelta(days=i)
-        datelist.append(dates_init + d)
+        day = dates_init + d
+        if day.weekday() < 5:
+            datelist.append(dates_init + d)
 
     def animate(i):
         if i < len(stock_list) - 100:
