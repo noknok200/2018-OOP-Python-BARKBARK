@@ -1,0 +1,1 @@
+fig.canvas.mpl_connect('key_press_event', press)
