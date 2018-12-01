@@ -1,5 +1,5 @@
-#client 들의 위치 데이터를 받으면서 game.py를 실행하는 함수, 이 파일이 메인이 될 예정
-#데이터 처리 법
+# client 들의 위치 데이터를 받으면서 game.py를 실행하는 함수, 이 파일이 메인이 될 예정
+# 데이터 처리 법
 '''
 받는 값
 (누르거나 뗀 시점, 총 점수)
@@ -12,7 +12,6 @@
 import game
 import socket
 import threading
-import* game
 
 myip = ''
 myport = 50000
@@ -27,6 +26,8 @@ client_list = []
 client_id = []
 
 # 서버로 부터 메시지를 받는 함수 | Thread 활용
+
+
 def receive(client_sock):
     global client_list  # 받은 메시지를 다른 클라이언트들에게 전송하고자 변수를 가져온다.
     while True:
@@ -60,6 +61,8 @@ def receive(client_sock):
     return 0
 
 # 연결 수립용 함수 | Thread 활용
+
+
 def connection():
     global client_list
     global client_id
@@ -72,7 +75,6 @@ def connection():
         client_list.append(client_sock)
         client_id.append(client_sock.fileno())
 
-
         print("{}가 접속하였습니다.".format(client_sock.fileno()))
         print("{}가 접속하였습니다.".format(client_addr))
         print("현재 연결된 사용자: {}\n".format(client_list))
@@ -81,11 +83,12 @@ def connection():
         thread_recv = threading.Thread(target=receive, args=(client_sock,))
         thread_recv.start()
 
+
 # 연결 수립용 스레드 생성 및 실행.
 thread_server = threading.Thread(target=connection, args=())
 thread_server.start()
 
-game_start() ############################game start!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+game_start()  # game start!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 thread_server.join()
 server_sock.close()

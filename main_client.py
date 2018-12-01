@@ -1,5 +1,5 @@
 # server에 위치 데이터를 주고 server에서 위치데이터를 받으면서 game.py를 실행하는 함수, 이 파일이 메인이 될 예정
-#데이터 처리 법
+# 데이터 처리 법
 '''
 my_place
 (누르거나 뗀 시점, 총 점수)
@@ -14,7 +14,6 @@ import socket
 import threading
 import keyboard
 import tkinter
-import* game
 
 # 접속할 서버의 정보
 server_ip = '10.171.36.XXX'
@@ -46,10 +45,13 @@ def receive():
     print('소켓의 읽기 버퍼를 닫습니다.')
     mysock.shutdown(socket.SHUT_RD)
 
+
 def keypress(self):
     mysock.send(bytes(my_place, 'UTF-8'))  # 서버에 메시지를 전송
 
 # 서버에게 메시지를 발송하는 함수 | Thread 활용
+
+
 def main_thread():
     global mysock
 
@@ -70,7 +72,7 @@ thread_main.start()
 # 메시지를 받고, 보내는 스레드가 종료되길 기다림
 thread_main.join()
 
-game_start()  ############################################# 게임 시작
+game_start()  # 게임 시작
 
 # 스레드가 종료되면, 열어둔 소켓을 닫는다.
 mysock.close()

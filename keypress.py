@@ -3,7 +3,7 @@ import keyboard
 import tkinter
 from pynput.keyboard import Key, Listener
 
-def key_pressed(self):  #self
+def key_pressed(key):  #self
     print("Click")
     return True
 
