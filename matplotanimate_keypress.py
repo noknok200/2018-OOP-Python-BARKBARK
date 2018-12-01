@@ -1,3 +1,7 @@
+"""
+실행 안되면 안되는 대로 놔둬
+
+"""
 from __future__ import print_function
 import sys
 import numpy as np
