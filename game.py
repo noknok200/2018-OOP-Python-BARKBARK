@@ -47,22 +47,24 @@ class Game(threading.Thread):
         '''
         player가 구매한 경우 
         '''
-        if state == '매수대기' :
-            if listner() :
-                price_buy = stock_data[t+100] #현재가로 매수
-                state = '매도대기' #매도대기 상태로 변경
-                print(state)
-
-        elif state == '매도대기' :
-            if listner() :
-                price_sell=stock_data[t+100] #매도 대기중에 버튼을 누르면 현재가로 매도
-                asset = cal_asset(asset, price_buy, price_sell) #자본 계산
-                state = '매수대기' #매수대기 상태로 변경
-                print(state)
-                print(asset)
-
-            ax1.plot(range(t,t+100),price_buy*points,color='blue') #매도대기 상태에서는 현재 얼마에 매수하였는지 표시
-
+        # if state == '매수대기' :
+        #     if listner() :
+        #         price_buy = stock_data[t+100] #현재가로 매수
+        #         state = '매도대기' #매도대기 상태로 변경
+        #         print(state)
+        #
+        # elif state == '매도대기' :
+        #     if listner() :
+        #         price_sell=stock_data[t+100] #매도 대기중에 버튼을 누르면 현재가로 매도
+        #         asset = cal_asset(asset, price_buy, price_sell) #자본 계산
+        #         state = '매수대기' #매수대기 상태로 변경
+        #         print(state)
+        #         print(asset)
+        #
+        #     ax1.plot(range(t,t+100),price_buy*points,color='blue') #매도대기 상태에서는 현재 얼마에 매수하였는지 표시
+"""
+윌에 아직 완성이 안되서 주서ㄱ처리로 놔둠    드래그 해서 'ctrl+/' 하면 주석 풀림
+"""
     # with keypress_mac.Listener
         # for _ in len(player_list) :
         #     ax1.plot(range(i,i+100),player_list[_][0],)
