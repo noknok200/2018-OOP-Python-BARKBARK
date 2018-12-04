@@ -7,7 +7,6 @@ import matplotanimate_LES
 
 
 def press(self):
-    print("!!!")
     if matplotanimate_LES.first_click == 0:
         matplotanimate_LES.first_click = 1
     else:
