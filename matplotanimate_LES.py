@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import time
 import numpy as np
+import opposcore
 
 from calculate_asset import cal_asset
 # import keypress_mac
@@ -13,7 +14,7 @@ ax1 = fig.add_subplot(1, 1, 1)
 # 삼성전자(005930), 시가총액 비중의 변화
 code = '005930'
 #df_stock['MarcapRatio'].plot(figsize=(16, 6))
-df_stock = marcap_date_range('2016-01-01', '2018-12-31', code)
+df_stock = marcap_date_range('2018-01-01', '2018-12-31', code)
 
 points = np.ones(100)
 
@@ -93,6 +94,9 @@ def animate(t):
                 ax1.plot([t,storage[1]],[past_time,stock_data[storage[1]]], color = color_select)
             else:
                 ax1.plot([storage[0],storage[1]],[stock_data[storage[0]],stock_data[storage[1]]],color = color_select)
+
+    if opposcore.opponent_list:
+        if
 
 # for _ in len(player_list) :
     #     ax1.plot(range(i,i+100),player_list[_][0],)

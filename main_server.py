@@ -9,9 +9,9 @@
 -누르지 않은 경우
 (클라이언트 ip, 0 , 총점수)
 '''
-import game
 import socket
 import threading
+import matplotanimate_keypress
 
 myip = ''
 myport = 50000
@@ -34,11 +34,12 @@ def receive(client_sock):
         # 클라이언트로부터 데이터를 받는다.
         try:
             data = client_sock.recv(1024)
-            name = data.decode('UTF-8')
+            connect = data.decode('UTF-8')
+            imfo = connect.split(".")
+            matplotanimate_keypress.matplotanimate_LES.opposcore.plotter(client_sock,imfo[0],imfo[1],imfo[2])
         except ConnectionError:
             print("{}와 연결이 끊겼습니다. #code1".format(client_sock.fileno()))
             break
-
         # 만약 클라이언트로부터 종료 요청이 온다면, 종료함. code0 : 클라이언트 전송 기능 닫았을때 오는 메시지
         if not data:
             print("{}이 연결 종료 요청을 합니다. #code0".format(client_sock.fileno()))
@@ -88,7 +89,9 @@ def connection():
 thread_server = threading.Thread(target=connection, args=())
 thread_server.start()
 
-game_start()  # game start!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+matplotanimate_keypress.matplotanimate_LES.fig.canvas.mpl_connect('key_press_event', matplotanimate_keypress.press)
+matplotanimate_keypress.matplotanimate_LES.plt.show()
+# game_start()  # game start!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 thread_server.join()
 server_sock.close()
