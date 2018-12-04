@@ -35,18 +35,28 @@ price_sell = 0
 state = '매수대기' #초기 매수대기
 asset = 1e8 #초기 자본
 click_time = 0
+first_click = 0
+data_storage = [[0,0]]
 
 def new_point(old,pre,now):
     return (pre-old)*(stock_data[now]-stock_data[old])/(now-old)+stock_data[old]
 
+def selecter(data1, data2):
+    if stock_data[data2] - stock_data[data1] > 0:
+        color_select = 'red'
+    elif stock_data[data2] - stock_data[data1] == 0:
+        color_select = 'black'
+    else:
+        color_select = 'blue'
+    return color_select
+
 def animate(t):
-    global click_time
+    global click_time, first_click
     global t_time
     t_time = t
     global state
-    global price_buy
-    global price_sell
-    global asset
+    global state, price_buy, price_sell, asset
+
     ax1.clear()
     ax1.plot(stock_data[t:t+100])
     # ax1.plot(range(t,t+100),stock_data[t+100]*points,color='red') #가장 마지막 가격을 선으로 나타냄
@@ -67,13 +77,24 @@ def animate(t):
     #         print(state)
     #         print(asset)
     # ax1.plot(range(t, t + 100), price_buy * points, color='blue')  # 매도대기 상태에서는 현재 얼마에 매수하였는지 표시
-    if click_time != 0 and t<=click_time:
-        ax1.plot([click_time,t+100],[stock_data[click_time],stock_data[t+100]], color='blue')  # 매도대기 상태에서는 현재 얼마에 매수하였는지 표시
-    elif click_time != 0 and t>click_time:
+    color_select = selecter(click_time,t+100)
+    if first_click == 1 and click_time != 0 and t<=click_time:
+        ax1.plot([click_time,t+100],[stock_data[click_time],stock_data[t+100]], color=color_select)  # 매도대기 상태에서는 현재 얼마에 매수하였는지 표시
+    elif first_click == 1 and click_time != 0 and t>click_time:
         new_time = new_point(click_time,t,t+100)
-        ax1.plot([t,t+100],[new_time,stock_data[t+100]],color = 'blue')
+        ax1.plot([t,t+100],[new_time,stock_data[t+100]],color = color_select)
 
-    # for _ in len(player_list) :
+    #저장되어 있는 data 그래프에 표현
+    for storage in data_storage:
+        if storage[1] > t:
+            color_select = selecter(storage[0],storage[1])
+            if t > storage[0]:
+                past_time = new_point(storage[0],t,storage[1])
+                ax1.plot([t,storage[1]],[past_time,stock_data[storage[1]]], color = color_select)
+            else:
+                ax1.plot([storage[0],storage[1]],[stock_data[storage[0]],stock_data[storage[1]]],color = color_select)
+
+# for _ in len(player_list) :
     #     ax1.plot(range(i,i+100),player_list[_][0],)
 
 ani = animation.FuncAnimation(fig, animate, interval=100)
