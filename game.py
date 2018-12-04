@@ -1,5 +1,6 @@
 from marcap.marcap_utils import marcap_date
 from marcap.marcap_utils import marcap_date_range
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import time
@@ -8,12 +9,17 @@ import numpy as np
 from calculate_asset import cal_asset
 # import keypress_mac
 
+mpl.rcParams['toolbar'] = 'None'
+plt.style.use(['dark_background'])
+
 fig = plt.figure()
 ax1 = fig.add_subplot(1, 1, 1)
-# 삼성전자(005930), 시가총액 비중의 변화
+
+ax1.get_xaxis().set_visible(False)
+plt.get_current_fig_manager().full_screen_toggle()
+
 code = '005930'
-#df_stock['MarcapRatio'].plot(figsize=(16, 6))
-df_stock = marcap_date_range('2016-01-01', '2016-12-31', code)
+df_stock = marcap_date_range('2015-01-01', '2015-12-31', code)
 
 points = np.ones(100)
 
@@ -80,6 +86,7 @@ def animate(t):
     #         print(state)
     #         print(asset)
     # ax1.plot(range(t, t + 100), price_buy * points, color='blue')  # 매도대기 상태에서는 현재 얼마에 매수하였는지 표시
+
     color_select = selecter(click_time, t+100)
     if first_click == 1 and click_time != 0 and t <= click_time:
         ax1.plot([click_time, t+100], [stock_data[click_time], stock_data[t+100]],
@@ -104,6 +111,11 @@ def animate(t):
     #     ax1.plot(range(i,i+100),player_list[_][0],)
 
 
-ani = animation.FuncAnimation(fig, animate, interval=100)
+def showAnimation():
+    ani = animation.FuncAnimation(fig, animate, interval=100)
+    plt.show()
+
 
 # plt.show()
+if __name__ == "__main__":
+    showAnimation()
