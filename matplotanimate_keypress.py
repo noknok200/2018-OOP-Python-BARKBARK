@@ -19,4 +19,5 @@ def press(self):
 
 
 matplotanimate_LES.fig.canvas.mpl_connect('button_press_event', press)
+matplotanimate_LES.load()
 matplotanimate_LES.show()
