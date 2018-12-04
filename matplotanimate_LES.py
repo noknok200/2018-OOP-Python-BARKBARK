@@ -25,14 +25,13 @@ plt.grid(True, linestyle='--')
 plt.get_current_fig_manager().full_screen_toggle()
 
 '''구매가 및 판매가'''
-price_buy = 0
-price_sell = 0
+price_buy = 1e-5
+price_sell = 1e-5
 state = '매수대기'  # 초기 매수대기
 asset = 1e8  # 초기 자본
 click_time = 0
 first_click = 0
 data_storage = [[0, 0]]
-
 
 def new_point(old, pre, now):
     return (pre-old)*(stock_data[now]-stock_data[old])/(now-old)+stock_data[old]
@@ -40,11 +39,11 @@ def new_point(old, pre, now):
 
 def selecter(data1, data2):
     if stock_data[data2] - stock_data[data1] > 0:
-        color_select = 'red'
+        color_select = 'green'
     elif stock_data[data2] - stock_data[data1] == 0:
-        color_select = 'black'
+        color_select = 'white'
     else:
-        color_select = 'blue'
+        color_select = 'red'
     return color_select
 
 
@@ -77,14 +76,30 @@ def animate(t):
         #         print(state)
         #         print(asset)
         # ax1.plot(range(t, t + 100), price_buy * points, color='blue')  # 매도대기 상태에서는 현재 얼마에 매수하였는지 표시
+        # print('\nfirst_click :' + str(first_click))
+        # print('state '+ state )
+        # print('click_time' + str(click_time))
+        
         color_select = selecter(click_time, t+100)
+        if first_click ==0 and click_time !=0:
+            price_sell = stock_data[click_time+100]
+            asset=cal_asset(asset,price_buy,price_sell)
+
+        elif first_click==1 and click_time !=0:
+            price_buy = stock_data[click_time+100]
+            print(asset)
+
+        #클릭포인트가 화면 안에 있을 때
         if first_click == 1 and click_time != 0 and t <= click_time:
             ax1.plot([click_time, t+100], [stock_data[click_time], stock_data[t+100]],
-                     color=color_select)  # 매도대기 상태에서는 현재 얼마에 매수하였는지 표시
+                     color=color_select)
+
+        #클릭포인트가 화면밖으로 사라지면
         elif first_click == 1 and click_time != 0 and t > click_time:
             new_time = new_point(click_time, t, t+100)
             ax1.plot([t, t+100], [new_time, stock_data[t+100]],
                      color=color_select)
+            price_sell = stock_data[t+100]
 
         # 저장되어 있는 data 그래프에 표현
         for storage in data_storage:
@@ -97,8 +112,8 @@ def animate(t):
                 else:
                     ax1.plot([storage[0], storage[1]], [
                         stock_data[storage[0]], stock_data[storage[1]]], color=color_select)
-    else:
-        plt.close(fig)
+    else: #when the game is end,
+        plt.pause(100000)
 # for _ in len(player_list) :
     #     ax1.plot(range(i,i+100),player_list[_][0],)
 
@@ -111,7 +126,7 @@ def show():
 def load():
     global stock_data
     code = '005930'
-    df_stock = marcap_date_range('2018-01-01', '2018-12-31', code)
+    df_stock = marcap_date_range('2017-01-01', '2018-12-31', code)
     df_stock = df_stock[df_stock['Code'] == '005930'].copy()
     latest_stocks = df_stock.iloc[-1]['Stocks']  # 범위 마지막날 주식수(기준)
     '''
