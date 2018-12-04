@@ -7,7 +7,7 @@ import numpy as np
 
 from calculate_asset import cal_asset
 # import keypress_mac
-
+plt.style.use('dark_background')
 fig = plt.figure()
 ax1 = fig.add_subplot(1, 1, 1)
 # 삼성전자(005930), 시가총액 비중의 변화
