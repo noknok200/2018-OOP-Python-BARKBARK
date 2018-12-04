@@ -13,7 +13,7 @@ ax1 = fig.add_subplot(1, 1, 1)
 # 삼성전자(005930), 시가총액 비중의 변화
 code = '005930'
 #df_stock['MarcapRatio'].plot(figsize=(16, 6))
-df_stock = marcap_date_range('2016-01-01', '2018-12-31', code)
+df_stock = marcap_date_range('2018-01-01', '2018-12-31', code)
 
 points = np.ones(100)
 
@@ -37,6 +37,11 @@ asset = 1e8 #초기 자본
 click_time = 0
 first_click = 0
 data_storage = [[0,0]]
+
+'''점수 시각화'''
+
+# axreset = plt.axes([0.93, 0.025, 0.05, 0.04])
+# score_button = plt.Button(axreset, asset , color= 'aliceblue', hovercolor='0.5')
 
 def new_point(old,pre,now):
     return (pre-old)*(stock_data[now]-stock_data[old])/(now-old)+stock_data[old]
