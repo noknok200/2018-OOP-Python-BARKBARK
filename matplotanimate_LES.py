@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import time
 import numpy as np
-import opposcore
 
 from calculate_asset import cal_asset
 # import keypress_mac
@@ -14,7 +13,7 @@ ax1 = fig.add_subplot(1, 1, 1)
 # 삼성전자(005930), 시가총액 비중의 변화
 code = '005930'
 #df_stock['MarcapRatio'].plot(figsize=(16, 6))
-df_stock = marcap_date_range('2018-01-01', '2018-12-31', code)
+df_stock = marcap_date_range('2016-01-01', '2018-12-31', code)
 
 points = np.ones(100)
 
@@ -33,14 +32,16 @@ stock_data = df_stock['Adj Close']
 '''구매가 및 판매가'''
 price_buy = 0
 price_sell = 0
-state = '매수대기' #초기 매수대기
-asset = 1e8 #초기 자본
+state = '매수대기'  # 초기 매수대기
+asset = 1e8  # 초기 자본
 click_time = 0
 first_click = 0
-data_storage = [[0,0]]
+data_storage = [[0, 0]]
 
-def new_point(old,pre,now):
+
+def new_point(old, pre, now):
     return (pre-old)*(stock_data[now]-stock_data[old])/(now-old)+stock_data[old]
+
 
 def selecter(data1, data2):
     if stock_data[data2] - stock_data[data1] > 0:
@@ -50,6 +51,7 @@ def selecter(data1, data2):
     else:
         color_select = 'blue'
     return color_select
+
 
 def animate(t):
     global click_time, first_click
@@ -78,30 +80,30 @@ def animate(t):
     #         print(state)
     #         print(asset)
     # ax1.plot(range(t, t + 100), price_buy * points, color='blue')  # 매도대기 상태에서는 현재 얼마에 매수하였는지 표시
-    color_select = selecter(click_time,t+100)
-    if first_click == 1 and click_time != 0 and t<=click_time:
-        ax1.plot([click_time,t+100],[stock_data[click_time],stock_data[t+100]], color=color_select)  # 매도대기 상태에서는 현재 얼마에 매수하였는지 표시
-    elif first_click == 1 and click_time != 0 and t>click_time:
-        new_time = new_point(click_time,t,t+100)
-        ax1.plot([t,t+100],[new_time,stock_data[t+100]],color = color_select)
+    color_select = selecter(click_time, t+100)
+    if first_click == 1 and click_time != 0 and t <= click_time:
+        ax1.plot([click_time, t+100], [stock_data[click_time], stock_data[t+100]],
+                 color=color_select)  # 매도대기 상태에서는 현재 얼마에 매수하였는지 표시
+    elif first_click == 1 and click_time != 0 and t > click_time:
+        new_time = new_point(click_time, t, t+100)
+        ax1.plot([t, t+100], [new_time, stock_data[t+100]], color=color_select)
 
-    #저장되어 있는 data 그래프에 표현
+    # 저장되어 있는 data 그래프에 표현
     for storage in data_storage:
         if storage[1] > t:
-            color_select = selecter(storage[0],storage[1])
+            color_select = selecter(storage[0], storage[1])
             if t > storage[0]:
-                past_time = new_point(storage[0],t,storage[1])
-                ax1.plot([t,storage[1]],[past_time,stock_data[storage[1]]], color = color_select)
+                past_time = new_point(storage[0], t, storage[1])
+                ax1.plot([t, storage[1]], [past_time,
+                                           stock_data[storage[1]]], color=color_select)
             else:
-                ax1.plot([storage[0],storage[1]],[stock_data[storage[0]],stock_data[storage[1]]],color = color_select)
-
-    if opposcore.opponent_list:
-        if
+                ax1.plot([storage[0], storage[1]], [
+                         stock_data[storage[0]], stock_data[storage[1]]], color=color_select)
 
 # for _ in len(player_list) :
     #     ax1.plot(range(i,i+100),player_list[_][0],)
 
+
 ani = animation.FuncAnimation(fig, animate, interval=100)
 
 # plt.show()
-
