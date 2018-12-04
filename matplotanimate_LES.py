@@ -1,5 +1,6 @@
 from marcap.marcap_utils import marcap_date
 from marcap.marcap_utils import marcap_date_range
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import time
@@ -8,26 +9,21 @@ import numpy as np
 from calculate_asset import cal_asset
 # import keypress_mac
 
+
+# 삼성전자(005930), 시가총액 비중의 변화
+
+#df_stock['MarcapRatio'].plot(figsize=(16, 6))
+
+stock_data = []
+
+'''외양 설정'''
+mpl.rcParams['toolbar'] = 'None'
+plt.style.use(['dark_background'])
 fig = plt.figure()
 ax1 = fig.add_subplot(1, 1, 1)
-# 삼성전자(005930), 시가총액 비중의 변화
-code = '005930'
-#df_stock['MarcapRatio'].plot(figsize=(16, 6))
-df_stock = marcap_date_range('2018-01-01', '2018-12-31', code)
 
-points = np.ones(100)
-
-'''
-수정종가 코드
-'''
-df_stock = df_stock[df_stock['Code'] == '005930'].copy()
-latest_stocks = df_stock.iloc[-1]['Stocks']  # 범위 마지막날 주식수(기준)
-
-df_stock['Adj Close'] = df_stock['Close'] * \
-    (df_stock['Stocks'] / latest_stocks)  # 수정종가
-
-stock_data = df_stock['Adj Close']
-
+ax1.get_xaxis().set_visible(False)
+plt.get_current_fig_manager().full_screen_toggle()
 
 '''구매가 및 판매가'''
 price_buy = 0
@@ -57,6 +53,7 @@ def animate(t):
     global click_time, first_click
     global t_time
     t_time = t
+    points = np.ones(100)
     global state
     global state, price_buy, price_sell, asset
 
@@ -104,5 +101,21 @@ def animate(t):
     #     ax1.plot(range(i,i+100),player_list[_][0],)
 
 
-ani = animation.FuncAnimation(fig, animate, interval=100)
-plt.show()
+def show():
+    ani = animation.FuncAnimation(fig, animate, interval=100)
+    plt.show()
+
+
+def load():
+    global stock_data
+    code = '005930'
+    df_stock = marcap_date_range('2018-01-01', '2018-12-31', code)
+    df_stock = df_stock[df_stock['Code'] == '005930'].copy()
+    latest_stocks = df_stock.iloc[-1]['Stocks']  # 범위 마지막날 주식수(기준)
+    '''
+    수정종가 코드
+    '''
+    df_stock['Adj Close'] = df_stock['Close'] * \
+        (df_stock['Stocks'] / latest_stocks)  # 수정종가
+
+    stock_data = df_stock['Adj Close']
