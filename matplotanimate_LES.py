@@ -7,14 +7,6 @@ import time
 import numpy as np
 
 from calculate_asset import cal_asset
-# import keypress_mac
-plt.style.use('dark_background')
-fig = plt.figure()
-ax1 = fig.add_subplot(1, 1, 1)
-# 삼성전자(005930), 시가총액 비중의 변화
-code = '005930'
-#df_stock['MarcapRatio'].plot(figsize=(16, 6))
-df_stock = marcap_date_range('2016-01-01', '2018-12-31', code)
 
 # 삼성전자(005930), 시가총액 비중의 변화
 
@@ -106,7 +98,7 @@ def animate(t):
                     ax1.plot([storage[0], storage[1]], [
                         stock_data[storage[0]], stock_data[storage[1]]], color=color_select)
     else:
-        plt.close(fig=fig)
+        plt.close(fig)
 # for _ in len(player_list) :
     #     ax1.plot(range(i,i+100),player_list[_][0],)
 
