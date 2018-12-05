@@ -9,7 +9,7 @@ my_place
 
 
 '''
-import game
+
 import socket
 import threading
 import keyboard
