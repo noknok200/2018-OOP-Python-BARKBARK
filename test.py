@@ -1,3 +1,9 @@
+import threading
+import time
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.lines import Line2D
+from matplotlib.animation import TimedAnimation
+from matplotlib.figure import Figure
 import sys
 import os
 from PyQt5 import QtGui
@@ -8,17 +14,11 @@ import numpy as np
 import random as rd
 import matplotlib
 matplotlib.use("Qt5Agg")
-from matplotlib.figure import Figure
-from matplotlib.animation import TimedAnimation
-from matplotlib.lines import Line2D
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-import time
-import threading
-
 
 
 def setCustomSize(x, width, height):
-    sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
+    sizePolicy = QtGui.QSizePolicy(
+        QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
     sizePolicy.setHorizontalStretch(0)
     sizePolicy.setVerticalStretch(0)
     sizePolicy.setHeightForWidth(x.sizePolicy().hasHeightForWidth())
@@ -26,7 +26,9 @@ def setCustomSize(x, width, height):
     x.setMinimumSize(QtCore.QSize(width, height))
     x.setMaximumSize(QtCore.QSize(width, height))
 
+
 ''''''
+
 
 class CustomMainWindow(QtGui.QWindow):
 
@@ -40,29 +42,30 @@ class CustomMainWindow(QtGui.QWindow):
 
         # Create FRAME_A
         self.FRAME_A = QtGui.QFrame(self)
-        self.FRAME_A.setStyleSheet("QWidget { background-color: %s }" % QtGui.QColor(210,210,235,255).name())
+        self.FRAME_A.setStyleSheet(
+            "QWidget { background-color: %s }" % QtGui.QColor(210, 210, 235, 255).name())
         self.LAYOUT_A = QtGui.QGridLayout()
         self.FRAME_A.setLayout(self.LAYOUT_A)
         self.setCentralWidget(self.FRAME_A)
 
         # Place the zoom button
-        self.zoomBtn = QtGui.QPushButton(text = 'zoom')
+        self.zoomBtn = QtGui.QPushButton(text='zoom')
         setCustomSize(self.zoomBtn, 100, 50)
         self.zoomBtn.clicked.connect(self.zoomBtnAction)
-        self.LAYOUT_A.addWidget(self.zoomBtn, *(0,0))
+        self.LAYOUT_A.addWidget(self.zoomBtn, *(0, 0))
 
         # Place the matplotlib figure
         self.myFig = CustomFigCanvas()
-        self.LAYOUT_A.addWidget(self.myFig, *(0,1))
+        self.LAYOUT_A.addWidget(self.myFig, *(0, 1))
 
         # Add the callbackfunc to ..
-        myDataLoop = threading.Thread(name = 'myDataLoop', target = dataSendLoop, daemon = True, args = (self.addData_callbackFunc,))
+        myDataLoop = threading.Thread(
+            name='myDataLoop', target=dataSendLoop, daemon=True, args=(self.addData_callbackFunc,))
         myDataLoop.start()
 
         self.show()
 
     ''''''
-
 
     def zoomBtnAction(self):
         print("zoom in")
@@ -73,7 +76,6 @@ class CustomMainWindow(QtGui.QWindow):
     def addData_callbackFunc(self, value):
         # print("Add data: " + str(value))
         self.myFig.addData(value)
-
 
 
 ''' End Class '''
@@ -100,25 +102,24 @@ class CustomFigCanvas(FigureCanvas, TimedAnimation):
         self.y = (self.n * 0.0) + 50
 
         # The window
-        self.fig = Figure(figsize=(5,5), dpi=100)
+        self.fig = Figure(figsize=(5, 5), dpi=100)
         self.ax1 = self.fig.add_subplot(111)
-
 
         # self.ax1 settings
         self.ax1.set_xlabel('time')
         self.ax1.set_ylabel('raw data')
         self.line1 = Line2D([], [], color='blue')
         self.line1_tail = Line2D([], [], color='red', linewidth=2)
-        self.line1_head = Line2D([], [], color='red', marker='o', markeredgecolor='r')
+        self.line1_head = Line2D(
+            [], [], color='red', marker='o', markeredgecolor='r')
         self.ax1.add_line(self.line1)
         self.ax1.add_line(self.line1_tail)
         self.ax1.add_line(self.line1_head)
         self.ax1.set_xlim(0, self.xlim - 1)
         self.ax1.set_ylim(0, 100)
 
-
         FigureCanvas.__init__(self, self.fig)
-        TimedAnimation.__init__(self, self.fig, interval = 50, blit = True)
+        TimedAnimation.__init__(self, self.fig, interval=50, blit=True)
 
     def new_frame_seq(self):
         return iter(range(self.n.size))
@@ -136,9 +137,8 @@ class CustomFigCanvas(FigureCanvas, TimedAnimation):
         top = self.ax1.get_ylim()[1]
         bottom += value
         top -= value
-        self.ax1.set_ylim(bottom,top)
+        self.ax1.set_ylim(bottom, top)
         self.draw()
-
 
     def _step(self, *args):
         # Extends the _step() method for the TimedAnimation class.
@@ -157,26 +157,26 @@ class CustomFigCanvas(FigureCanvas, TimedAnimation):
             self.y[-1] = self.addedData[0]
             del(self.addedData[0])
 
-
-        self.line1.set_data(self.n[ 0 : self.n.size - margin ], self.y[ 0 : self.n.size - margin ])
-        self.line1_tail.set_data(np.append(self.n[-10:-1 - margin], self.n[-1 - margin]), np.append(self.y[-10:-1 - margin], self.y[-1 - margin]))
+        self.line1.set_data(
+            self.n[0: self.n.size - margin], self.y[0: self.n.size - margin])
+        self.line1_tail.set_data(np.append(
+            self.n[-10:-1 - margin], self.n[-1 - margin]), np.append(self.y[-10:-1 - margin], self.y[-1 - margin]))
         self.line1_head.set_data(self.n[-1 - margin], self.y[-1 - margin])
         self._drawn_artists = [self.line1, self.line1_tail, self.line1_head]
-
 
 
 ''' End Class '''
 
 
-# You need to setup a signal slot mechanism, to 
+# You need to setup a signal slot mechanism, to
 # send data to your GUI in a thread-safe way.
 # Believe me, if you don't do this right, things
 # go very very wrong..
 class Communicate(QtCore.QObject):
     data_signal = QtCore.pyqtSignal(float)
 
-''' End Class '''
 
+''' End Class '''
 
 
 def dataSendLoop(addData_callbackFunc):
@@ -193,18 +193,15 @@ def dataSendLoop(addData_callbackFunc):
         if(i > 499):
             i = 0
         time.sleep(0.1)
-        mySrc.data_signal.emit(y[i]) # <- Here you emit a signal!
+        mySrc.data_signal.emit(y[i])  # <- Here you emit a signal!
         i += 1
     ###
 ###
 
 
-
-
-if __name__== '__main__':
+if __name__ == '__main__':
     app = QApplication(sys.argv)
     QApplication.setStyle(QtWidgets.QStyleFactory.create('Plastique'))
     myGUI = CustomMainWindow()
-
 
     sys.exit(app.exec_())

@@ -11,7 +11,7 @@
 '''
 import socket
 import threading
-import matplotanimate_keypress
+import plot_keybind
 
 myip = ''
 myport = 50000
@@ -36,7 +36,8 @@ def receive(client_sock):
             data = client_sock.recv(1024)
             connect = data.decode('UTF-8')
             imfo = connect.split(".")
-            matplotanimate_keypress.matplotanimate_LES.opposcore.plotter(client_sock,imfo[0],imfo[1],imfo[2])
+            plot_core.opposcore.plotter(
+                client_sock, imfo[0], imfo[1], imfo[2])
         except ConnectionError:
             print("{}와 연결이 끊겼습니다. #code1".format(client_sock.fileno()))
             break
@@ -89,8 +90,9 @@ def connection():
 thread_server = threading.Thread(target=connection, args=())
 thread_server.start()
 
-matplotanimate_keypress.matplotanimate_LES.fig.canvas.mpl_connect('key_press_event', matplotanimate_keypress.press)
-matplotanimate_keypress.matplotanimate_LES.plt.show()
+plot_keybind.plot_core.fig.canvas.mpl_connect(
+    'key_press_event', plot_keybind.press)
+plot_keybind.plot_core.plt.show()
 # game_start()  # game start!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 thread_server.join()

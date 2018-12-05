@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import time
 import numpy as np
+import pystock
 
 from calculate_asset import cal_asset
 # import keypress_mac
@@ -31,10 +32,14 @@ price_buy = 0
 price_sell = 0
 state = '매수대기'  # 초기 매수대기
 asset = 1e8  # 초기 자본
+t_time = 0
+
 click_time = 0
 first_click = 0
 data_storage = [[0, 0]]
-opponent_list = [[0, 0], [104, 176], [178, 183], [186, 189], [194, 224], [228, 234], [239, 358], [366, 374], [377, 381], [388, 395], [404, 409], [416, 435]]
+opponent_list = [[0, 0], [104, 176], [178, 183], [186, 189], [194, 224], [
+    228, 234], [239, 358], [366, 374], [377, 381], [388, 395], [404, 409], [416, 435]]
+
 
 def new_point(old, pre, now):
     return (pre-old)*(stock_data[now]-stock_data[old])/(now-old)+stock_data[old]
@@ -49,28 +54,29 @@ def selecter(data1, data2):
         color_select = 'blue'
     return color_select
 
-def clicking_plotter(now_left,now_right,left,right,color):
+
+def clicking_plotter(now_left, now_right, left, right, color):
     if right <= now_right:
         if now_left <= left:
-            ax1.plot([left, right],[stock_data[left], stock_data[right]],color=color)
+            ax1.plot([left, right], [stock_data[left],
+                                     stock_data[right]], color=color)
         else:
             new_leftvalue = new_point(left, now_left, right)
-            ax1.plot([now_left, right],[new_leftvalue,stock_data[right]],color=color)
+            ax1.plot([now_left, right], [new_leftvalue,
+                                         stock_data[right]], color=color)
     else:
         new_rightvalue = new_point(left, now_right, right)
         if now_left <= left:
-            ax1.plot([left, now_right],[stock_data[left],new_rightvalue], color=color)
+            ax1.plot([left, now_right], [
+                     stock_data[left], new_rightvalue], color=color)
         else:
             new_leftvalue = new_point(left, now_left, right)
-            ax1.plot([now_left, now_right], [new_leftvalue, new_rightvalue], color=color)
+            ax1.plot([now_left, now_right], [
+                     new_leftvalue, new_rightvalue], color=color)
+
 
 def animate(t):
-    global click_time, first_click
-    global t_time
-    t_time = t
-    points = np.ones(100)
-    global state
-    global state, price_buy, price_sell, asset
+    global click_time, first_click, t_time, state, price_buy, price_sell, asset
 
     if t < len(stock_data) - 100:
         ax1.clear()
@@ -95,18 +101,19 @@ def animate(t):
         # ax1.plot(range(t, t + 100), price_buy * points, color='blue')  # 매도대기 상태에서는 현재 얼마에 매수하였는지 표시
         if first_click == 1 and click_time != 0:
             color_select = selecter(click_time, t+100)
-            clicking_plotter(t,t+100,click_time,t+100,color_select)
+            clicking_plotter(t, t+100, click_time, t+100, color_select)
 
         # 저장되어 있는 data 그래프에 표현
         for storage in data_storage:
             if storage[1] > t:
                 color_select = selecter(storage[0], storage[1])
-                clicking_plotter(t,t+100,storage[0],storage[1],color_select)
+                clicking_plotter(
+                    t, t+100, storage[0], storage[1], color_select)
 
         for opponent_imfo in opponent_list:
             if opponent_imfo[0] <= t+100 and opponent_imfo[1] >= t:
-               clicking_plotter(t,t+100,opponent_imfo[0],opponent_imfo[1],'gray')
-
+                clicking_plotter(
+                    t, t+100, opponent_imfo[0], opponent_imfo[1], 'gray')
 
     else:
         plt.close(fig=fig)
@@ -114,13 +121,14 @@ def animate(t):
     #     ax1.plot(range(i,i+100),player_list[_][0],)
 
 
-def show():
-    ani = animation.FuncAnimation(fig, animate, interval=100)
+def show(data):
+    global stock_data
+    stock_data = data
+    animation.FuncAnimation(fig, animate, interval=100)
     plt.show()
 
 
 def load():
-    global stock_data
     code = '005930'
     df_stock = marcap_date_range('2017 -01-01', '2018-12-31', code)
     df_stock = df_stock[df_stock['Code'] == '005930'].copy()
@@ -131,4 +139,4 @@ def load():
     df_stock['Adj Close'] = df_stock['Close'] * \
         (df_stock['Stocks'] / latest_stocks)  # 수정종가
 
-    stock_data = df_stock['Adj Close']
+    pystock.stockdat = df_stock['Adj Close']
