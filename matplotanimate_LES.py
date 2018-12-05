@@ -34,7 +34,7 @@ asset = 1e8  # 초기 자본
 click_time = 0
 first_click = 0
 data_storage = [[0, 0]]
-
+opponent_list = [[0, 0], [104, 176], [178, 183], [186, 189], [194, 224], [228, 234], [239, 358], [366, 374], [377, 381], [388, 395], [404, 409], [416, 435]]
 
 def new_point(old, pre, now):
     return (pre-old)*(stock_data[now]-stock_data[old])/(now-old)+stock_data[old]
@@ -49,6 +49,20 @@ def selecter(data1, data2):
         color_select = 'blue'
     return color_select
 
+def clicking_plotter(now_left,now_right,left,right,color):
+    if right <= now_right:
+        if now_left <= left:
+            ax1.plot([left, right],[stock_data[left], stock_data[right]],color=color)
+        else:
+            new_leftvalue = new_point(left, now_left, right)
+            ax1.plot([now_left, right],[new_leftvalue,stock_data[right]],color=color)
+    else:
+        new_rightvalue = new_point(left, now_right, right)
+        if now_left <= left:
+            ax1.plot([left, now_right],[stock_data[left],new_rightvalue], color=color)
+        else:
+            new_leftvalue = new_point(left, now_left, right)
+            ax1.plot([now_left, now_right], [new_leftvalue, new_rightvalue], color=color)
 
 def animate(t):
     global click_time, first_click
@@ -79,26 +93,21 @@ def animate(t):
         #         print(state)
         #         print(asset)
         # ax1.plot(range(t, t + 100), price_buy * points, color='blue')  # 매도대기 상태에서는 현재 얼마에 매수하였는지 표시
-        color_select = selecter(click_time, t+100)
-        if first_click == 1 and click_time != 0 and t <= click_time:
-            ax1.plot([click_time, t+100], [stock_data[click_time], stock_data[t+100]],
-                     color=color_select)  # 매도대기 상태에서는 현재 얼마에 매수하였는지 표시
-        elif first_click == 1 and click_time != 0 and t > click_time:
-            new_time = new_point(click_time, t, t+100)
-            ax1.plot([t, t+100], [new_time, stock_data[t+100]],
-                     color=color_select)
+        if first_click == 1 and click_time != 0:
+            color_select = selecter(click_time, t+100)
+            clicking_plotter(t,t+100,click_time,t+100,color_select)
 
         # 저장되어 있는 data 그래프에 표현
         for storage in data_storage:
             if storage[1] > t:
                 color_select = selecter(storage[0], storage[1])
-                if t > storage[0]:
-                    past_time = new_point(storage[0], t, storage[1])
-                    ax1.plot([t, storage[1]], [past_time,
-                                               stock_data[storage[1]]], color=color_select)
-                else:
-                    ax1.plot([storage[0], storage[1]], [
-                        stock_data[storage[0]], stock_data[storage[1]]], color=color_select)
+                clicking_plotter(t,t+100,storage[0],storage[1],color_select)
+
+        for opponent_imfo in opponent_list:
+            if opponent_imfo[0] <= t+100 and opponent_imfo[1] >= t:
+               clicking_plotter(t,t+100,opponent_imfo[0],opponent_imfo[1],'gray')
+
+
     else:
         plt.close(fig=fig)
 # for _ in len(player_list) :
@@ -113,7 +122,7 @@ def show():
 def load():
     global stock_data
     code = '005930'
-    df_stock = marcap_date_range('2018-01-01', '2018-12-31', code)
+    df_stock = marcap_date_range('2017 -01-01', '2018-12-31', code)
     df_stock = df_stock[df_stock['Code'] == '005930'].copy()
     latest_stocks = df_stock.iloc[-1]['Stocks']  # 범위 마지막날 주식수(기준)
     '''
