@@ -23,7 +23,7 @@ fig = plt.figure()
 ax1 = fig.add_subplot(1, 1, 1)
 
 ax1.get_xaxis().set_visible(False)
-plt.grid(True, color='grey')
+plt.grid(True, linestyle='--')
 plt.get_current_fig_manager().full_screen_toggle()
 
 '''구매가 및 판매가'''
@@ -60,7 +60,7 @@ def animate(t):
 
     if t < len(stock_data) - 100:
         ax1.clear()
-        ax1.plot(stock_data[t:t+100])
+        ax1.plot(stock_data[t:t + 100])
         # ax1.plot(range(t,t+100),stock_data[t+100]*points,color='red') #가장 마지막 가격을 선으로 나타냄
         '''
         player가 구매한 경우 
@@ -99,7 +99,8 @@ def animate(t):
                 else:
                     ax1.plot([storage[0], storage[1]], [
                         stock_data[storage[0]], stock_data[storage[1]]], color=color_select)
-
+    else:
+        plt.close(fig=fig)
 # for _ in len(player_list) :
     #     ax1.plot(range(i,i+100),player_list[_][0],)
 
