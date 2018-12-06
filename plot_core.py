@@ -6,14 +6,9 @@ import matplotlib.animation as animation
 import time
 import numpy as np
 import pystock
+import threading
 
 from calculate_asset import cal_asset
-# import keypress_mac
-
-
-# 삼성전자(005930), 시가총액 비중의 변화
-
-#df_stock['MarcapRatio'].plot(figsize=(16, 6))
 
 stock_data = []
 
@@ -75,7 +70,7 @@ def clicking_plotter(now_left, now_right, left, right, color):
                      new_leftvalue, new_rightvalue], color=color)
 
 
-def animate(t):
+def _animate(t):
     global click_time, first_click, t_time, state, price_buy, price_sell, asset
 
     if t < len(stock_data) - 100:
@@ -83,7 +78,7 @@ def animate(t):
         ax1.plot(stock_data[t:t + 100])
         # ax1.plot(range(t,t+100),stock_data[t+100]*points,color='red') #가장 마지막 가격을 선으로 나타냄
         '''
-        player가 구매한 경우 
+        player가 구매한 경우
         '''
         # if state == '매수대기' :
         #     if keypress.key_pressed() :
@@ -121,22 +116,27 @@ def animate(t):
     #     ax1.plot(range(i,i+100),player_list[_][0],)
 
 
-def show(data):
-    global stock_data
-    stock_data = data
-    animation.FuncAnimation(fig, animate, interval=100)
+def _graph():
+    animation.FuncAnimation(fig, _animate, interval=100)
     plt.show()
 
 
-def load():
+def show():
+    global stock_data
+
+    s = threading.Thread(target=_graph)
+    s.start()
+
     code = '005930'
     df_stock = marcap_date_range('2017 -01-01', '2018-12-31', code)
     df_stock = df_stock[df_stock['Code'] == '005930'].copy()
     latest_stocks = df_stock.iloc[-1]['Stocks']  # 범위 마지막날 주식수(기준)
+
     '''
     수정종가 코드
     '''
     df_stock['Adj Close'] = df_stock['Close'] * \
         (df_stock['Stocks'] / latest_stocks)  # 수정종가
 
-    pystock.stockdat = df_stock['Adj Close']
+    s.join()
+    stock_data = df_stock['Adj Close']
