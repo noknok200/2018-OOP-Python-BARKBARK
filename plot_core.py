@@ -76,7 +76,7 @@ def _animate(t):
     if t < len(stock_data) - 100:
         ax1.clear()
         ax1.plot(stock_data[t:t + 100])
-<<<<<<< HEAD
+
         # ax1.plot(range(t,t+100),stock_data[t+100]*points,color='red') #가장 마지막 가격을 선으로 나타냄
         '''
         player가 구매한 경우
@@ -95,31 +95,28 @@ def _animate(t):
         #         print(state)
         #         print(asset)
         # ax1.plot(range(t, t + 100), price_buy * points, color='blue')  # 매도대기 상태에서는 현재 얼마에 매수하였는지 표시
-=======
-        
-        #현황 출력
+
+        # 현황 출력
         plt.title(str(asset), loc='left')
-        plt.title(str(round(d_asset*100,2)), loc='right')
-        
+        # plt.title(str(round(d_asset*100, 2)), loc='right')
+
         color_select = selecter(click_time, t+100)
 
-        #매도시 자산 계산
-        if first_click ==0 and click_time !=0 and t+99<=click_time:
+        # 매도시 자산 계산
+        if first_click == 0 and click_time != 0 and t+99 <= click_time:
             price_sell = stock_data[t+99]
-            prev_asset=asset
-            
-            
-            #현황 출력
-            prev_asset=asset
-            asset=cal_asset(asset,price_buy,price_sell)
-            d_asset=(asset-prev_asset)/asset
+            prev_asset = asset
+
+            # 현황 출력
+            prev_asset = asset
+            asset = cal_asset(asset, price_buy, price_sell)
+            d_asset = (asset-prev_asset)/asset
             print(str(asset)+' '+str(d_asset*100))
 
-        #매수시 구매가격 저장
-        elif first_click==1 and click_time !=0 and t+99<=click_time:
+        # 매수시 구매가격 저장
+        elif first_click == 1 and click_time != 0 and t+99 <= click_time:
             price_buy = stock_data[t+99]
 
->>>>>>> 1691e1194b1709ddce10f80023e807e5eff86e6e
         if first_click == 1 and click_time != 0:
             color_select = selecter(click_time, t+100)
             clicking_plotter(t, t+100, click_time, t+100, color_select)
@@ -136,13 +133,13 @@ def _animate(t):
                 clicking_plotter(
                     t, t+100, opponent_imfo[0], opponent_imfo[1], 'gray')
 
-    else: #when the game is end,
-        if first_click==1 :
-            asset=cal_asset(asset,price_buy,price_sell)
-            d_asset=(asset-1e8)/asset
+    else:  # when the game is end,
+        if first_click == 1:
+            asset = cal_asset(asset, price_buy, price_sell)
+            d_asset = (asset-1e8)/asset
             print(str(asset)+' '+str(d_asset*100))
-        else :
-            d_asset=(asset-1e8)/asset
+        else:
+            d_asset = (asset-1e8)/asset
             print(str(asset)+' '+str(d_asset*100))
         plt.pause(100000)
 # for _ in len(player_list) :
