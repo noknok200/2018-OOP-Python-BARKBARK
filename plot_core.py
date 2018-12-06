@@ -32,10 +32,9 @@ t_time = 0
 click_time = 0
 first_click = 0
 data_storage = [[0, 0]]
-opponent_list = []
-opponent_score = 0
-start_date1 = 0
-start_date2 = 0
+opponent_list = [[0, 0], [104, 176], [178, 183], [186, 189], [194, 224], [
+    228, 234], [239, 358], [366, 374], [377, 381], [388, 395], [404, 409], [416, 435]]
+
 
 def new_point(old, pre, now):
     return (pre-old)*(stock_data[now]-stock_data[old])/(now-old)+stock_data[old]
@@ -153,13 +152,13 @@ def _graph():
 
 
 def show():
-    global stock_data, start_date1, start_date2
+    global stock_data
 
     s = threading.Thread(target=_graph)
     s.start()
 
     code = '005930'
-    df_stock = marcap_date_range(start_date1, start_date2, code)
+    df_stock = marcap_date_range('2017 -01-01', '2018-12-31', code)
     df_stock = df_stock[df_stock['Code'] == '005930'].copy()
     latest_stocks = df_stock.iloc[-1]['Stocks']  # 범위 마지막날 주식수(기준)
 
