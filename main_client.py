@@ -7,7 +7,7 @@ my_place
 받는 값
 (클라이언트 ip. 누르거나 뗀 시점, 총 점수)
 
-
+주식데이터날짜/점수/좌표,좌표.좌표,좌표............
 '''
 
 import socket
@@ -33,7 +33,8 @@ def receive():
         try:
             data = mysock.recv(1024)  # 서버로 부터 값을 받는것
             temp = data.decode('UTF-8')
-            # temp를 통해 상대의 위치 값을 받자!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            oopponent_imfo = temp.split("/")
+
         except ConnectionError:
             print("서버와 접속이 끊겼습니다. Enter를 누르세요.")
             break
@@ -72,7 +73,8 @@ thread_main.start()
 # 메시지를 받고, 보내는 스레드가 종료되길 기다림
 thread_main.join()
 
-game_start()  # 게임 시작
+
+game_start()
 
 # 스레드가 종료되면, 열어둔 소켓을 닫는다.
 mysock.close()
