@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import time
 import numpy as np
-import pystock
 import threading
 
 from calculate_asset import cal_asset
@@ -28,6 +27,7 @@ price_sell = 0
 state = '매수대기'  # 초기 매수대기
 asset = 1e8  # 초기 자본
 t_time = 0
+plotEnded = True
 
 click_time = 0
 first_click = 0
@@ -70,8 +70,9 @@ def clicking_plotter(now_left, now_right, left, right, color):
                      new_leftvalue, new_rightvalue], color=color)
 
 
-def _animate(t):
+def animate(t):
     global click_time, first_click, t_time, state, price_buy, price_sell, asset
+    print(t)
 
     if t < len(stock_data) - 100:
         ax1.clear()
@@ -97,6 +98,7 @@ def _animate(t):
         # ax1.plot(range(t, t + 100), price_buy * points, color='blue')  # 매도대기 상태에서는 현재 얼마에 매수하였는지 표시
 
         # 현황 출력
+
         plt.title(str(asset), loc='left')
         # plt.title(str(round(d_asset*100, 2)), loc='right')
 
@@ -134,6 +136,8 @@ def _animate(t):
                     t, t+100, opponent_imfo[0], opponent_imfo[1], 'gray')
 
     else:  # when the game is end,
+        global plotEnded
+        plotEnded = True
         if first_click == 1:
             asset = cal_asset(asset, price_buy, price_sell)
             d_asset = (asset-1e8)/asset
@@ -146,19 +150,30 @@ def _animate(t):
     #     ax1.plot(range(i,i+100),player_list[_][0],)
 
 
-def _graph():
-    animation.FuncAnimation(fig, _animate, interval=100)
-    plt.show()
-
-
 def show():
+    if len(stock_data) == 0:
+        print('loading')
+        _load()
+
+    print(len(stock_data))
+    global plotEnded
+    plotEnded = False
+
+    # s = threading.Thread(target=_load)
+    # s.start()
+
+    print(5)
+
+    animation.FuncAnimation(fig, animate, interval=100)
+    plt.show()
+    print(6)
+
+
+def _load():
     global stock_data
 
-    s = threading.Thread(target=_graph)
-    s.start()
-
     code = '005930'
-    df_stock = marcap_date_range('2017 -01-01', '2018-12-31', code)
+    df_stock = marcap_date_range('2017-01-01', '2017-12-31', code)
     df_stock = df_stock[df_stock['Code'] == '005930'].copy()
     latest_stocks = df_stock.iloc[-1]['Stocks']  # 범위 마지막날 주식수(기준)
 
@@ -168,5 +183,11 @@ def show():
     df_stock['Adj Close'] = df_stock['Close'] * \
         (df_stock['Stocks'] / latest_stocks)  # 수정종가
 
-    s.join()
+    while not plotEnded:
+        continue
+
     stock_data = df_stock['Adj Close']
+
+
+if __name__ == "__main__":
+    show()

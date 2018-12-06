@@ -1,12 +1,10 @@
 # The main module to be executed
 
-import plot_keybind as pk
+from plot_keybind import startstock
 import threading
 from time import sleep
 
-stockdat = []
-
 
 while True:
-    pk.startstock()
+    startstock()
     sleep(1)
