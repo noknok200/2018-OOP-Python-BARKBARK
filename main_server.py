@@ -1,17 +1,14 @@
 # client 들의 위치 데이터를 받으면서 game.py를 실행하는 함수, 이 파일이 메인이 될 예정
 # 데이터 처리 법
 '''
-받는 값
-(누르거나 뗀 시점, 총 점수)
-
-보내는 값
-(클라이언트 ip, 누르거나 뗀 시점, 총점수)
--누르지 않은 경우
-(클라이언트 ip, 0 , 총점수)
+주식데이터날짜/점수/좌표,좌표.좌표,좌표............
+날짜:"점수/좌표,좌표.좌표,좌표.,,==........."
 '''
 import socket
 import threading
 import plot_keybind
+import plot_core
+import random
 
 myip = ''
 myport = 50000
@@ -24,20 +21,21 @@ server_sock.listen()
 # 접속한 클라이언트들을 저장할 공간
 client_list = []
 client_id = []
-
+client_dict = {}
 # 서버로 부터 메시지를 받는 함수 | Thread 활용
 
 
 def receive(client_sock):
-    global client_list  # 받은 메시지를 다른 클라이언트들에게 전송하고자 변수를 가져온다.
+    # global client_list  # 받은 메시지를 다른 클라이언트들에게 전송하고자 변수를 가져온다.
     while True:
         # 클라이언트로부터 데이터를 받는다.
         try:
             data = client_sock.recv(1024)
             connect = data.decode('UTF-8')
-            imfo = connect.split(".")
-            plot_core.opposcore.plotter(
-                client_sock, imfo[0], imfo[1], imfo[2])
+            imfo = connect.split("/")
+            if client_dict[imfo[0]].split("/")[0] < imfo[1]:
+                client_dict[imfo[1]] = imfo[1] + "/" + imfo[2]
+
         except ConnectionError:
             print("{}와 연결이 끊겼습니다. #code1".format(client_sock.fileno()))
             break
@@ -47,10 +45,10 @@ def receive(client_sock):
             client_sock.send(bytes("서버에서 클라이언트 정보를 삭제하는 중입니다.", 'utf-8'))
             break
 
-        # 데이터가 들어왔다면 접속하고 있는 모든 클라이언트에게 메시지 전송
-        for sock in client_list:
-            if sock != client_sock:
-                sock.send(bytes(data, 'UTF-8'))
+        # # 데이터가 들어왔다면 접속하고 있는 모든 클라이언트에게 메시지 전송
+        # for sock in client_list:
+        #     if sock != client_sock:
+        #         sock.send(bytes(data, 'UTF-8'))
 
     # 메시지 송발신이 끝났으므로, 대상인 client는 목록에서 삭제.
     client_id.remove(client_sock.fileno())
@@ -80,6 +78,9 @@ def connection():
         print("{}가 접속하였습니다.".format(client_sock.fileno()))
         print("{}가 접속하였습니다.".format(client_addr))
         print("현재 연결된 사용자: {}\n".format(client_list))
+        send_date = random.choice(client_dict.keys())
+        send_message = send_date + "/" + client_dict[send_date]
+        client_sock.send(bytes(send_message,"utf"))
 
         # 접속한 클라이언트를 기준으로 메시지를 수신 할 수 있는 스레드를 생성함.
         thread_recv = threading.Thread(target=receive, args=(client_sock,))

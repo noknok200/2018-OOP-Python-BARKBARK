@@ -70,37 +70,23 @@ def clicking_plotter(now_left, now_right, left, right, color):
                      new_leftvalue, new_rightvalue], color=color)
 
 
+<<<<<<< HEAD
 def animate(t):
     global click_time, first_click, t_time, state, price_buy, price_sell, asset
     print(t)
+=======
+def _animate(t):
+    global click_time, first_click, t_time, state, price_buy, price_sell, asset, d_asset
+>>>>>>> bfbde9f99048e288b90e3a4ab6b2c57c29ce66bc
 
     if t < len(stock_data) - 100:
         ax1.clear()
         ax1.plot(stock_data[t:t + 100])
 
-        # ax1.plot(range(t,t+100),stock_data[t+100]*points,color='red') #가장 마지막 가격을 선으로 나타냄
-        '''
-        player가 구매한 경우
-        '''
-        # if state == '매수대기' :
-        #     if keypress.key_pressed() :
-        #         price_buy = stock_data[t+100] #현재가로 매수
-        #         state = '매도대기' #매도대기 상태로 변경
-        #         print(state)
-        #
-        # elif state == '매도대기' :
-        #     if keypress.key_pressed() :
-        #         price_sell=stock_data[t+100] #매도 대기중에 버튼을 누르면 현재가로 매도
-        #         asset = cal_asset(asset, price_buy, price_sell) #자본 계산
-        #         state = '매수대기' #매수대기 상태로 변경
-        #         print(state)
-        #         print(asset)
-        # ax1.plot(range(t, t + 100), price_buy * points, color='blue')  # 매도대기 상태에서는 현재 얼마에 매수하였는지 표시
-
         # 현황 출력
 
         plt.title(str(asset), loc='left')
-        # plt.title(str(round(d_asset*100, 2)), loc='right')
+        plt.title(str(round(d_asset*100, 2)), loc='right')
 
         color_select = selecter(click_time, t+100)
 
