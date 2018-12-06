@@ -19,5 +19,5 @@ def press(self):
 
 
 def startstock():
-    plot_core.fig.canvas.mpl_connect('key_press_event', press)
+    plot_core.fig.canvas.mpl_connect('button_press_event', press)
     plot_core.show()
