@@ -1,13 +1,11 @@
 # client 들의 위치 데이터를 받으면서 game.py를 실행하는 함수, 이 파일이 메인이 될 예정
 # 데이터 처리 법
 '''
-주식데이터날짜/점수/좌표,좌표.좌표,좌표............
-날짜:"점수/좌표,좌표.좌표,좌표.,,==........."
+주식데이터날짜=날짜/점수/좌표,좌표.좌표,좌표............
+날짜=날짜:"점수/좌표,좌표.좌표,좌표.,,==........."
 '''
 import socket
 import threading
-import plot_keybind
-import plot_core
 import random
 
 myip = ''
@@ -91,9 +89,6 @@ def connection():
 thread_server = threading.Thread(target=connection, args=())
 thread_server.start()
 
-plot_keybind.plot_core.fig.canvas.mpl_connect(
-    'key_press_event', plot_keybind.press)
-plot_keybind.plot_core.plt.show()
 # game_start()  # game start!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 thread_server.join()

@@ -7,13 +7,12 @@ my_place
 받는 값
 (클라이언트 ip. 누르거나 뗀 시점, 총 점수)
 
-주식데이터날짜/점수/좌표,좌표.좌표,좌표............
+주식데이터날짜=날짜/점수/좌표,좌표.좌표,좌표............
 '''
 
 import socket
 import threading
-import keyboard
-import tkinter
+import plot_core
 
 # 접속할 서버의 정보
 server_ip = '10.171.36.XXX'
@@ -33,8 +32,17 @@ def receive():
         try:
             data = mysock.recv(1024)  # 서버로 부터 값을 받는것
             temp = data.decode('UTF-8')
-            oopponent_imfo = temp.split("/")
-
+            opponent_imfo = temp.split("/")
+            our_game_date = opponent_imfo[0].split["="]
+            plot_core.start_date1 ,plot_core.start_date2 = our_game_date[0] , our_game_date[1]
+            plot_core.opponent_score = opponent_imfo[1]
+            preopponent_list = opponent_imfo[2].split(".")
+            opponent_list = []
+            for i in preopponent_list:
+                start_end = i.split(",")
+                opponent_list.append([start_end[0],start_end[1]])
+            plot_core.opponent_list = opponent_list
+            plot_core._graph()
         except ConnectionError:
             print("서버와 접속이 끊겼습니다. Enter를 누르세요.")
             break
@@ -47,24 +55,12 @@ def receive():
     mysock.shutdown(socket.SHUT_RD)
 
 
-def keypress(self):
-    mysock.send(bytes(my_place, 'UTF-8'))  # 서버에 메시지를 전송
-
-# 서버에게 메시지를 발송하는 함수 | Thread 활용
-
-
 def main_thread():
     global mysock
 
-    # 메시지 받는 스레스 시작
-    thread_recv = threading.Thread(target=receive, args=())
-    thread_recv.start()
-
-    root = tkinter.Tk()
-    root.bind_all('<Key>', keypress)
-    root.withdraw()
-    root.mainloop()
-
+# 메시지 받는 스레스 시작
+thread_recv = threading.Thread(target=receive, args=())
+thread_recv.start()
 
 # 메시지 보내는 스레드 시작
 thread_main = threading.Thread(target=main_thread, args=())
@@ -72,9 +68,6 @@ thread_main.start()
 
 # 메시지를 받고, 보내는 스레드가 종료되길 기다림
 thread_main.join()
-
-
-game_start()
 
 # 스레드가 종료되면, 열어둔 소켓을 닫는다.
 mysock.close()
