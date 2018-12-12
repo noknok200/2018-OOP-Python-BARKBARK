@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import time
 import numpy as np
-import pystock
+# import pystock
 import threading
 
 from calculate_asset import cal_asset
@@ -170,3 +170,10 @@ def show():
 
     s.join()
     stock_data = df_stock['Adj Close']
+
+
+# 이걸로 실행해 보기...실행이 안됨;;
+# start_data1 = "2018-01-01"
+# start_data2 = "2018-12-31"
+# show()
+# _graph()

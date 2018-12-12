@@ -15,7 +15,7 @@ import threading
 import plot_core
 
 # 접속할 서버의 정보
-server_ip = '10.171.36.XXX'
+server_ip = '10.171.36.218'
 server_port = 50000
 address = (server_ip, server_port)
 
@@ -33,16 +33,18 @@ def receive():
             data = mysock.recv(1024)  # 서버로 부터 값을 받는것
             temp = data.decode('UTF-8')
             opponent_imfo = temp.split("/")
-            our_game_date = opponent_imfo[0].split["="]
-            plot_core.start_date1 ,plot_core.start_date2 = our_game_date[0] , our_game_date[1]
-            plot_core.opponent_score = opponent_imfo[1]
-            preopponent_list = opponent_imfo[2].split(".")
-            opponent_list = []
-            for i in preopponent_list:
-                start_end = i.split(",")
-                opponent_list.append([start_end[0],start_end[1]])
-            plot_core.opponent_list = opponent_list
-            plot_core._graph()
+            if opponent_imfo != [""]:
+                our_game_date = opponent_imfo[0].split("=")
+                plot_core.start_data1 ,plot_core.start_data2 = our_game_date[0] , our_game_date[1]
+                plot_core.opponent_score = opponent_imfo[1]
+                preopponent_list = opponent_imfo[2].split(".")
+                opponent_list = []
+                for i in preopponent_list:
+                    start_end = i.split(",")
+                    opponent_list.append([start_end[0],start_end[1]])
+                plot_core.opponent_list = opponent_list
+                plot_core._graph()
+                print(plot_core.opponent_list)
         except ConnectionError:
             print("서버와 접속이 끊겼습니다. Enter를 누르세요.")
             break
@@ -54,20 +56,17 @@ def receive():
     print('소켓의 읽기 버퍼를 닫습니다.')
     mysock.shutdown(socket.SHUT_RD)
 
-
-def main_thread():
-    global mysock
-
 # 메시지 받는 스레스 시작
 thread_recv = threading.Thread(target=receive, args=())
 thread_recv.start()
 
-# 메시지 보내는 스레드 시작
-thread_main = threading.Thread(target=main_thread, args=())
-thread_main.start()
+# # 메시지 보내는 스레드 시작
+# thread_main = threading.Thread(target=main_thread, args=())
+# thread_main.start()
 
 # 메시지를 받고, 보내는 스레드가 종료되길 기다림
-thread_main.join()
+# thread_main.join()
+thread_recv.join()
 
 # 스레드가 종료되면, 열어둔 소켓을 닫는다.
 mysock.close()
