@@ -1,9 +1,12 @@
-# client 들의 위치 데이터를 받으면서 game.py를 실행하는 함수, 이 파일이 메인이 될 예정
-# 데이터 처리 법
+# client에게 데이터를 주고 받는 함수, 이 파일이 메인이 될 예정
 '''
-주식데이터날짜=날짜/점수/좌표,좌표.좌표,좌표............
-날짜=날짜:"점수/좌표,좌표.좌표,좌표.,,==........."
+<데이터 처리 법>
+주식데이터
+    날짜=날짜/점수/좌표,좌표.좌표,좌표............
+날짜 dictionary
+    날짜=날짜:"점수/좌표,좌표.좌표,좌표.,,==........."
 '''
+
 import socket
 import threading
 import random
@@ -43,11 +46,6 @@ def receive(client_sock):
         #     client_sock.send(bytes("서버에서 클라이언트 정보를 삭제하는 중입니다.", 'UTF-8'))
         #     break
 
-        # # 데이터가 들어왔다면 접속하고 있는 모든 클라이언트에게 메시지 전송
-        # for sock in client_list:
-        #     if sock != client_sock:
-        #         sock.send(bytes(data, 'UTF-8'))
-
     # 메시지 송발신이 끝났으므로, 대상인 client는 목록에서 삭제.
     client_id.remove(client_sock.fileno())
     client_list.remove(client_sock)
@@ -55,7 +53,6 @@ def receive(client_sock):
     # 삭제 후 sock 닫기
     client_sock.close()
     print("클라이언트 소켓을 정상적으로 닫았습니다.")
-    print('#----------------------------#')
     return 0
 
 # 연결 수립용 함수 | Thread 활용
@@ -74,21 +71,18 @@ def connection():
         print("{}가 접속하였습니다.".format(client_sock.fileno()))
         print("{}가 접속하였습니다.".format(client_addr))
         print("현재 연결된 사용자: {}\n".format(client_list))
-        #send_date = random.choice(client_dict.keys())
-        send_date = "2018-01-01=2018-12-31"
+        #send_date = random.choice(client_dict.keys()) #랜덤으로 딕셔너리에서 뽑는게 아직 안됨.
+        send_date = "2018-01-01=2018-12-31"   #이게 대체하고는 있음
         send_message = send_date + "/" + client_dict[send_date]
         client_sock.send(bytes(send_message,"UTF-8"))
-        print("opponent imformation to ", client_sock.fileno(), "\n")
+
         # 접속한 클라이언트를 기준으로 메시지를 수신 할 수 있는 스레드를 생성함.
         thread_recv = threading.Thread(target=receive, args=(client_sock,))
         thread_recv.start()
 
-
 # 연결 수립용 스레드 생성 및 실행.
 thread_server = threading.Thread(target=connection, args=())
 thread_server.start()
-
-# game_start()  # game start!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 thread_server.join()
 server_sock.close()

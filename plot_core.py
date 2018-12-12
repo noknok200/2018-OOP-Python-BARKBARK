@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import time
 import numpy as np
-# import pystock
+import pystock
 import threading
 
 from calculate_asset import cal_asset
@@ -32,11 +32,10 @@ t_time = 0
 click_time = 0
 first_click = 0
 data_storage = [[0, 0]]
-opponent_list = [[0, 0], [104, 176], [178, 183], [186, 189], [194, 224], [
-    228, 234], [239, 358], [366, 374], [377, 381], [388, 395], [404, 409], [416, 435]]
+opponent_list = [[0,0]] #[0, 0], [104, 176], [178, 183], [186, 189], [194, 224], [228, 234], [239, 358], [366, 374], [377, 381], [388, 395], [404, 409], [416, 435]
 start_data1 = 0
 start_data2 = 0
-opponent_score = 0 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+opponent_score = 0
 
 def new_point(old, pre, now):
     return (pre-old)*(stock_data[now]-stock_data[old])/(now-old)+stock_data[old]
@@ -158,7 +157,7 @@ def show():
     s.start()
 
     code = '005930'
-    df_stock = marcap_date_range(start_data1, start_data2, code)
+    df_stock = marcap_date_range(start_data1, start_data2, code) #함수실행할때 start_data에 값을 넣어줌
     df_stock = df_stock[df_stock['Code'] == '005930'].copy()
     latest_stocks = df_stock.iloc[-1]['Stocks']  # 범위 마지막날 주식수(기준)
 
@@ -172,7 +171,7 @@ def show():
     stock_data = df_stock['Adj Close']
 
 
-# 이걸로 실행해 보기...실행이 안됨;;
+#이걸로 실행해 보기...실행이 안됨
 # start_data1 = "2018-01-01"
 # start_data2 = "2018-12-31"
 # show()

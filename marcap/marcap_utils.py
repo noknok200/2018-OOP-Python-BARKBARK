@@ -17,7 +17,7 @@ def marcap_date(date):
     :return: DataFrame
     '''
     date = pd.to_datetime(date)
-    csv_file = 'marcap/data/marcap-%s.csv.gz' % (date.year)
+    csv_file = 'marcap/data/marcap-%s.csv.gz' % (date.year)  #C:/Users/user/Desktop/NOAH/2학년/2학기/정보/py-project/marcap/data/marcap-%s.csv.gz
 
     result = None
     try:
@@ -46,7 +46,7 @@ def marcap_date_range(start, end, code=None):
     df_list = []
     for year in range(start.year, end.year + 1):
         try:
-            csv_file = 'marcap/data/marcap-%s.csv.gz' % (year)  #C:/Users/user/Desktop/NOAH/2학년/2학기/정보/py-project/marcap/data/marcap-%s.csv.gz
+            csv_file = 'marcap/data/marcap-%s.csv.gz' % (year)
             df = pd.read_csv(csv_file, dtype={'Code':str}, parse_dates=['Date'])
             df_list.append(df)
         except Exception as e:

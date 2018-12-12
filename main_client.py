@@ -1,4 +1,4 @@
-# server에 위치 데이터를 주고 server에서 위치데이터를 받으면서 game.py를 실행하는 함수, 이 파일이 메인이 될 예정
+# server에 데이터를  주고 받으면서 plot_core.py를 실행하는 함수, 이 파일이 메인이 될 예정
 # 데이터 처리 법
 '''
 my_place
@@ -33,18 +33,21 @@ def receive():
             data = mysock.recv(1024)  # 서버로 부터 값을 받는것
             temp = data.decode('UTF-8')
             opponent_imfo = temp.split("/")
+
             if opponent_imfo != [""]:
                 our_game_date = opponent_imfo[0].split("=")
                 plot_core.start_data1 ,plot_core.start_data2 = our_game_date[0] , our_game_date[1]
                 plot_core.opponent_score = opponent_imfo[1]
                 preopponent_list = opponent_imfo[2].split(".")
                 opponent_list = []
+
                 for i in preopponent_list:
                     start_end = i.split(",")
                     opponent_list.append([start_end[0],start_end[1]])
                 plot_core.opponent_list = opponent_list
-                plot_core._graph()
+                # plot_core._graph() #plot_core함수가 제대로 돌아가지 않고 있음
                 print(plot_core.opponent_list)
+
         except ConnectionError:
             print("서버와 접속이 끊겼습니다. Enter를 누르세요.")
             break
