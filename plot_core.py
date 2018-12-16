@@ -114,8 +114,6 @@ def _animate(t):  # 그래프를 animate화 하여 움직이는 것 처럼 출�
             prev_asset = asset
             asset = cal_asset(asset, price_buy, price_sell)
             d_asset = (asset-prev_asset)/asset
-            print(str(asset)+' '+str(d_asset*100))
-
         # 매수시 구매가격 저장
         elif first_click == 1 and click_time != 0 and t+99 <= click_time:
             price_buy = stock_data[t+99]
@@ -140,10 +138,8 @@ def _animate(t):  # 그래프를 animate화 하여 움직이는 것 처럼 출�
         if first_click == 1:
             asset = cal_asset(asset, price_buy, price_sell)
             d_asset = (asset-1e8)/asset
-            print(str(asset)+' '+str(d_asset*100))
         else:
             d_asset = (asset-1e8)/asset
-            print(str(asset) + ' ' + str(d_asset * 100))
 
         plt.title('final asset:'+str(asset), loc='left')
         plt.title('final rate: ' +
@@ -160,7 +156,6 @@ def _load(start_data1, start_data2, code):
 
     # 함수실행할때 start_data에 값을 넣어줌
     df_stock = marcap_date_range(start_data1, start_data2, code)
-    print('_load: loaded {} datas'.format(len(df_stock)))
     df_stock = df_stock[df_stock['Code'] == code].copy()
     latest_stocks = df_stock.iloc[-1]['Stocks']  # 범위 마지막날 주식수(기준)
 
