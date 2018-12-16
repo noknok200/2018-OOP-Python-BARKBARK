@@ -20,16 +20,12 @@ plt.style.use(['dark_background'])
 fig = plt.figure()
 ax1 = fig.add_subplot(1, 1, 1)
 
-ax1.get_xaxis().set_visible(False)
-plt.grid(True, linestyle='--')
-# plt.get_current_fig_manager().full_screen_toggle()
-
 '''구매가 및 판매가'''
 price_buy = 0
 price_sell = 0
 state = '매수대기'  # 초기 매수대기
 asset = 1e8  # 초기 자본
-d_asset =0
+d_asset = 0
 t_time = 0
 
 click_time = 0
@@ -81,11 +77,12 @@ def clicking_plotter(now_left, now_right, left, right, color):
 def _animate(t):
     global click_time, first_click, t_time, state, price_buy, price_sell, asset, ongoing, ax1, d_asset
     print('animate: t = {}'.format(t))
+    plt.grid(True, linestyle='--')
 
     if t < len(stock_data) - 100:
         ax1.clear()
         ax1.plot(stock_data[t:t + 100])
-        plt.title('{}/{}'.format(t, len(stock_data)-100), loc='center')
+        plt.title('{}/{}'.format(t + 1, len(stock_data)-100), loc='center')
         # ax1.plot(range(t,t+100),stock_data[t+100]*points,color='red') #가장 마지막 가격을 선으로 나타냄
         '''
         player가 구매한 경우
@@ -151,10 +148,6 @@ def _animate(t):
 
         global fig
         plt.close(fig=fig)
-
-        fig = plt.figure()
-        # ax1 = fig.add_subplot(1, 1, 1)
-
         ongoing = False
 # for _ in len(player_list) :
     #     ax1.plot(range(i,i+100),player_list[_][0],)
@@ -183,7 +176,7 @@ def _load(start_data1, start_data2, code):
 
 
 def show():
-    global stock_data, ongoing, fig
+    global stock_data, ongoing, fig, ax1
     year = randrange(1995, 2018)
 
     if len(stock_data) == 0:
@@ -194,6 +187,12 @@ def show():
     s = threading.Thread(target=_load, args=(
         str(year) + '-01-01', str(year + 1) + '-12-31', '005930'))
     s.start()
+
+    fig = plt.figure()
+    ax1 = fig.add_subplot(1, 1, 1)
+
+    ax1.get_xaxis().set_visible(False)
+    plt.get_current_fig_manager().full_screen_toggle()
 
     ongoing = True
     ani = animation.FuncAnimation(fig, _animate, interval=50)
