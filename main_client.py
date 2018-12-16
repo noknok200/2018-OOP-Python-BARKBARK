@@ -36,14 +36,14 @@ def receive():
 
             if opponent_imfo != [""]:
                 our_game_date = opponent_imfo[0].split("=")
-                plot_core.start_data1 ,plot_core.start_data2 = our_game_date[0] , our_game_date[1]
+                plot_core.start_data1, plot_core.start_data2 = our_game_date[0], our_game_date[1]
                 plot_core.opponent_score = opponent_imfo[1]
                 preopponent_list = opponent_imfo[2].split(".")
                 opponent_list = []
 
                 for i in preopponent_list:
                     start_end = i.split(",")
-                    opponent_list.append([start_end[0],start_end[1]])
+                    opponent_list.append([start_end[0], start_end[1]])
                 plot_core.opponent_list = opponent_list
                 # plot_core._graph() #plot_core함수가 제대로 돌아가지 않고 있음
                 print(plot_core.opponent_list)
@@ -58,6 +58,7 @@ def receive():
 
     print('소켓의 읽기 버퍼를 닫습니다.')
     mysock.shutdown(socket.SHUT_RD)
+
 
 # 메시지 받는 스레스 시작
 thread_recv = threading.Thread(target=receive, args=())

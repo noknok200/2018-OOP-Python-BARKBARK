@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import time
 import numpy as np
-import pystock
 import threading
 
 from calculate_asset import cal_asset
@@ -20,7 +19,7 @@ ax1 = fig.add_subplot(1, 1, 1)
 
 ax1.get_xaxis().set_visible(False)
 plt.grid(True, linestyle='--')
-plt.get_current_fig_manager().full_screen_toggle()
+# plt.get_current_fig_manager().full_screen_toggle()
 
 '''구매가 및 판매가'''
 price_buy = 0
@@ -32,10 +31,12 @@ t_time = 0
 click_time = 0
 first_click = 0
 data_storage = [[0, 0]]
-opponent_list = [[0,0]] #[0, 0], [104, 176], [178, 183], [186, 189], [194, 224], [228, 234], [239, 358], [366, 374], [377, 381], [388, 395], [404, 409], [416, 435]
+# [0, 0], [104, 176], [178, 183], [186, 189], [194, 224], [228, 234], [239, 358], [366, 374], [377, 381], [388, 395], [404, 409], [416, 435]
+opponent_list = [[0, 0]]
 start_data1 = 0
 start_data2 = 0
 opponent_score = 0
+
 
 def new_point(old, pre, now):
     return (pre-old)*(stock_data[now]-stock_data[old])/(now-old)+stock_data[old]
@@ -145,20 +146,13 @@ def _animate(t):
     #     ax1.plot(range(i,i+100),player_list[_][0],)
 
 
-def _graph():
-    animation.FuncAnimation(fig, _animate, interval=100)
-    plt.show()
-
-
-def show():
+def _load(start_data1, start_data2, code):
     global stock_data
 
-    s = threading.Thread(target=_graph)
-    s.start()
-
-    code = '005930'
-    df_stock = marcap_date_range(start_data1, start_data2, code) #함수실행할때 start_data에 값을 넣어줌
-    df_stock = df_stock[df_stock['Code'] == '005930'].copy()
+    # 함수실행할때 start_data에 값을 넣어줌
+    df_stock = marcap_date_range(start_data1, start_data2, code)
+    print('_load: loaded {} datas'.format(len(df_stock)))
+    df_stock = df_stock[df_stock['Code'] == code].copy()
     latest_stocks = df_stock.iloc[-1]['Stocks']  # 범위 마지막날 주식수(기준)
 
     '''
@@ -166,12 +160,23 @@ def show():
     '''
     df_stock['Adj Close'] = df_stock['Close'] * \
         (df_stock['Stocks'] / latest_stocks)  # 수정종가
-
-    s.join()
     stock_data = df_stock['Adj Close']
 
 
-#이걸로 실행해 보기...실행이 안됨
+def show():
+    global stock_data
+    if len(stock_data) == 0:
+        print('no data loaded currently. loading.')
+        _load('2017-01-01', '2017-12-31', '005930')
+    s = threading.Thread(target=_load, args=(
+        '2017-01-01', '2017-12-31', '005930'))
+    s.start()
+
+    ani = animation.FuncAnimation(fig, _animate, interval=100)
+    plt.show()
+
+
+# 이걸로 실행해 보기...실행이 안됨
 # start_data1 = "2018-01-01"
 # start_data2 = "2018-12-31"
 # show()
