@@ -10,6 +10,8 @@ import numpy as np
 import pandas as pd
 import glob
 
+import sys
+
 
 def marcap_date(date):
     '''
@@ -44,6 +46,7 @@ def marcap_date_range(start, end, code=None):
     :param str code: 종목코드 (지정하지 않으면 모든 종목)
     :return: DataFrame
     '''
+
     start = pd.to_datetime(start)
     end = pd.to_datetime(end)
     df_list = []
@@ -51,7 +54,7 @@ def marcap_date_range(start, end, code=None):
         try:
             csv_file = 'marcap/data/marcap-%s.csv.gz' % (year)
             df = pd.read_csv(csv_file, dtype={
-                             'Code': str}, parse_dates=['Date'])
+                'Code': str}, parse_dates=['Date'])
             df_list.append(df)
 
             print('marcaputils: loaded {} datas.'.format(len(df)))
