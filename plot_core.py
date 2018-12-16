@@ -27,7 +27,7 @@ price_buy = 0
 price_sell = 0
 state = '매수대기'  # 초기 매수대기
 asset = 1e8  # 초기 자본
-d_asset=0
+d_asset = 0
 t_time = 0
 
 click_time = 0
@@ -71,12 +71,13 @@ def clicking_plotter(now_left, now_right, left, right, color):
         else:
             new_leftvalue = new_point(left, now_left, right)
             ax1.plot([now_left, now_right], [
-                     new_leftvalue, new_rightvalue], color=color)
+                new_leftvalue, new_rightvalue], color=color)
 
 
 def _animate(t):
     global click_time, first_click, t_time, state, price_buy, price_sell, asset, d_asset
-    t_time=t
+
+    t_time = t
 
     if t < len(stock_data) - 100:
         ax1.clear()
@@ -155,7 +156,7 @@ def _load(start_data1, start_data2, code):
 
 def show():
     global stock_data
-    year = randrange(1995,2018)
+    year = randrange(1995, 2018)
 
     if len(stock_data) == 0:
         print('no data loaded currently. loading.')
