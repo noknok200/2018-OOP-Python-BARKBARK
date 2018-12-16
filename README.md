@@ -62,7 +62,9 @@ Multiplay.py : 다른 플레이어의 구매/판매 시점 받아오기
 
 Score.py : 점수계산
 
+## 10. 실행법
 
+pystock.py를 실행시키면 됩니다.
 
 #### readme 작성관련 참고하기 [바로가기](https://heropy.blog/2017/09/30/markdown/)
 
