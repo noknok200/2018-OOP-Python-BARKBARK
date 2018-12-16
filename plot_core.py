@@ -7,17 +7,22 @@ import time
 import numpy as np
 import threading
 from random import randrange
-
 from calculate_asset import cal_asset
 
-stock_data = []
+stock_data = [] #클릭을 통해 user가 매수 및 매도한 시점을 저장 - 차기에 멀티플레이에서 사용 가능
 
 '''외양 설정'''
 mpl.rcParams['toolbar'] = 'None'
 plt.style.use(['ggplot'])
 
+<<<<<<< HEAD
 
 # plt.get_current_fig_manager().full_screen_toggle()
+=======
+ax1.get_xaxis().set_visible(False)
+plt.grid(True, linestyle='--')
+# plt.get_current_fig_manager().full_screen_toggle() 다음 line을 사용하면 전체화면으로 이용가능
+>>>>>>> c2f7f59808e6a15555fd68a5bd2869c4a2b35b69
 
 '''구매가 및 판매가'''
 price_buy = 0
@@ -29,9 +34,13 @@ t_time = 0
 
 click_time = 0
 first_click = 0
+<<<<<<< HEAD
 data_storage = []
+=======
+data_storage = [[0, 0]] #클릭 후 잔상을 남기기 위한 리스트
+opponent_list = [[0, 0]] #다른 상대들의 기록을 다음 리스트로 볼 수 있음 - 멀티플레이 게임에 사용가능
+>>>>>>> c2f7f59808e6a15555fd68a5bd2869c4a2b35b69
 # [0, 0], [104, 176], [178, 183], [186, 189], [194, 224], [228, 234], [239, 358], [366, 374], [377, 381], [388, 395], [404, 409], [416, 435]
-opponent_list = [[0, 0]]
 start_data1 = 0
 start_data2 = 0
 opponent_score = 0
@@ -57,11 +66,11 @@ def initcore():
     plt.grid(True, linestyle='--')
 
 
-def new_point(old, pre, now):
+def new_point(old, pre, now): #기울기 계산 함수 함수값을 반환한다.
     return (pre-old)*(stock_data[now]-stock_data[old])/(now-old)+stock_data[old]
 
 
-def selecter(data1, data2):
+def selecter(data1, data2): #상한가, 하한가, 정가에 따라서 다양한 색을 결정해주는 함수
     if stock_data[data2] - stock_data[data1] > 0:
         color_select = 'red'
     elif stock_data[data2] - stock_data[data1] == 0:
@@ -71,7 +80,7 @@ def selecter(data1, data2):
     return color_select
 
 
-def clicking_plotter(now_left, now_right, left, right, color):
+def clicking_plotter(now_left, now_right, left, right, color): #이미 매도가 끝난 시점들의 잔상을 남기거나 매수는 이미 했고 매도를 할 시점을 따라가주는 함수
     if right <= now_right:
         if now_left <= left:
             ax1.plot([left, right], [stock_data[left],
@@ -91,7 +100,7 @@ def clicking_plotter(now_left, now_right, left, right, color):
                 new_leftvalue, new_rightvalue], color=color)
 
 
-def _animate(t):
+def _animate(t): #그래프를 animate화 하여 움직이는 것 처럼 출력해주는 함수
     global click_time, first_click, t_time, state, price_buy, price_sell, asset, d_asset
 
     t_time = t
@@ -192,6 +201,10 @@ def show():
     isgoing = True
 
     ani = animation.FuncAnimation(fig, _animate, interval=100)
+<<<<<<< HEAD
     plt.show()
 
     isgoing = False
+=======
+    plt.show()
+>>>>>>> c2f7f59808e6a15555fd68a5bd2869c4a2b35b69
