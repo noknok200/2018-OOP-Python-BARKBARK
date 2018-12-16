@@ -106,7 +106,7 @@ def _animate(t):
 
         # 현황 출력
         plt.title(str(asset), loc='left')
-        # plt.title(str(round(d_asset*100, 2)), loc='right')
+        plt.title(str(round(d_asset*100, 2)), loc='right')
 
         # 매도시 자산 계산
         if first_click == 0 and click_time != 0 and t+99 <= click_time:
