@@ -14,7 +14,7 @@ stock_data = []
 
 '''외양 설정'''
 mpl.rcParams['toolbar'] = 'None'
-plt.style.use(['dark_background'])
+plt.style.use(['ggplot'])
 fig = plt.figure()
 ax1 = fig.add_subplot(1, 1, 1)
 
@@ -149,7 +149,7 @@ def _load(start_data1, start_data2, code):
     stock_data = df_stock['Adj Close']
 
     time.sleep(3)
-    
+
     print('stock data loaded')
 
 
@@ -162,9 +162,9 @@ def show():
         _load(str(year) + '-01-01', str(year + 1) + '-12-31', '005930')
         year = randrange(1995, 2018)
 
-    s = threading.Thread(target=_load, args=(
-        str(year) + '-01-01', str(year + 1) + '-12-31', '005930'))
-    s.start()
+    # s = threading.Thread(target=_load, args=(
+    #     str(year) + '-01-01', str(year + 1) + '-12-31', '005930'))
+    # s.start()
 
     ani = animation.FuncAnimation(fig, _animate, interval=100)
     plt.show()
