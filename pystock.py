@@ -7,4 +7,4 @@ from time import sleep
 
 while True:
     startstock()
-    sleep(1)
+    #sleep(1)
