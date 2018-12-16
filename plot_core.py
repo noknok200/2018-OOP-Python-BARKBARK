@@ -8,7 +8,7 @@ import numpy as np
 import threading
 from random import randrange
 
-from calculate_asset import cal_asset
+from oldfiles.calculate_asset import cal_asset
 
 stock_data = []
 
