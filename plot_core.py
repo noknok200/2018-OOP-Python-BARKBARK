@@ -29,6 +29,7 @@ price_buy = 0
 price_sell = 0
 state = '매수대기'  # 초기 매수대기
 asset = 1e8  # 초기 자본
+d_asset =0
 t_time = 0
 
 click_time = 0
@@ -78,7 +79,7 @@ def clicking_plotter(now_left, now_right, left, right, color):
 
 
 def _animate(t):
-    global click_time, first_click, t_time, state, price_buy, price_sell, asset, ongoing, ax1
+    global click_time, first_click, t_time, state, price_buy, price_sell, asset, ongoing, ax1, d_asset
     print('animate: t = {}'.format(t))
 
     if t < len(stock_data) - 100:
