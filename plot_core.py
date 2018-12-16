@@ -20,6 +20,7 @@ plt.style.use(['dark_background'])
 fig = plt.figure()
 ax1 = fig.add_subplot(1, 1, 1)
 
+
 '''구매가 및 판매가'''
 price_buy = 0
 price_sell = 0
@@ -76,8 +77,7 @@ def clicking_plotter(now_left, now_right, left, right, color):
 
 def _animate(t):
     global click_time, first_click, t_time, state, price_buy, price_sell, asset, ongoing, ax1, d_asset
-    print('animate: t = {}'.format(t))
-    plt.grid(True, linestyle='--')
+    print('animate: t = {}'.format(t * 0.05))
 
     if t < len(stock_data) - 100:
         ax1.clear()
@@ -190,9 +190,7 @@ def show():
 
     fig = plt.figure()
     ax1 = fig.add_subplot(1, 1, 1)
-
     ax1.get_xaxis().set_visible(False)
-    plt.get_current_fig_manager().full_screen_toggle()
 
     ongoing = True
     ani = animation.FuncAnimation(fig, _animate, interval=50)
