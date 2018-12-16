@@ -15,7 +15,7 @@ import threading
 import plot_core
 
 # 접속할 서버의 정보
-server_ip = '10.171.36.218'
+server_ip = '127.0.0.1'
 server_port = 50000
 address = (server_ip, server_port)
 
