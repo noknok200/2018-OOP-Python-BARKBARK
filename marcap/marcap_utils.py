@@ -56,8 +56,6 @@ def marcap_date_range(start, end, code=None):
             df = pd.read_csv(csv_file, dtype={
                 'Code': str}, parse_dates=['Date'])
             df_list.append(df)
-
-            print('marcaputils: loaded {} datas.'.format(len(df)))
         except Exception as e:
             print("파일 불러오기 실패")
             pass
