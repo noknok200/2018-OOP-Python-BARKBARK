@@ -8,13 +8,13 @@ import numpy as np
 import threading
 from random import randrange
 
-from calculate_asset import cal_asset
+from oldfiles.calculate_asset import cal_asset
 
 stock_data = []
 
 '''외양 설정'''
 mpl.rcParams['toolbar'] = 'None'
-plt.style.use(['dark_background'])
+plt.style.use(['ggplot'])
 fig = plt.figure()
 ax1 = fig.add_subplot(1, 1, 1)
 
@@ -163,9 +163,9 @@ def show():
         _load(str(year) + '-01-01', str(year + 1) + '-12-31', '005930')
         year = randrange(1995, 2018)
 
-    s = threading.Thread(target=_load, args=(
-        str(year) + '-01-01', str(year + 1) + '-12-31', '005930'))
-    s.start()
+    # s = threading.Thread(target=_load, args=(
+    #     str(year) + '-01-01', str(year + 1) + '-12-31', '005930'))
+    # s.start()
 
     ani = animation.FuncAnimation(fig, _animate, interval=100)
     plt.show()
