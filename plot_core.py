@@ -15,11 +15,8 @@ stock_data = []
 '''외양 설정'''
 mpl.rcParams['toolbar'] = 'None'
 plt.style.use(['ggplot'])
-fig = plt.figure()
-ax1 = fig.add_subplot(1, 1, 1)
 
-ax1.get_xaxis().set_visible(False)
-plt.grid(True, linestyle='--')
+
 # plt.get_current_fig_manager().full_screen_toggle()
 
 '''구매가 및 판매가'''
@@ -32,12 +29,32 @@ t_time = 0
 
 click_time = 0
 first_click = 0
-data_storage = [[0, 0]]
+data_storage = []
 # [0, 0], [104, 176], [178, 183], [186, 189], [194, 224], [228, 234], [239, 358], [366, 374], [377, 381], [388, 395], [404, 409], [416, 435]
 opponent_list = [[0, 0]]
 start_data1 = 0
 start_data2 = 0
 opponent_score = 0
+
+fig = None
+ax1 = None
+
+isgoing = False
+
+
+def initcore():
+    global fig, ax1, stock_data, data_storage, click_time, first_click, start_data1, start_data2
+    data_storage = [[0, 0]]
+    start_data1 = 0
+    start_data2 = 0
+    first_click = 0
+    click_time = 0
+
+    fig = plt.figure()
+    ax1 = fig.add_subplot(1, 1, 1)
+
+    ax1.get_xaxis().set_visible(False)
+    plt.grid(True, linestyle='--')
 
 
 def new_point(old, pre, now):
@@ -126,9 +143,16 @@ def _animate(t):
             print(str(asset)+' '+str(d_asset*100))
         else:
             d_asset = (asset-1e8)/asset
-            print(str(asset)+' '+str(d_asset*100))
+            print(str(asset) + ' ' + str(d_asset * 100))
+
         plt.title('final asset:'+str(asset), loc='left')
-        plt.title('final rate: '+str(round(d_asset*100, 2))+'%', loc='right')
+        plt.title('final rate: ' +
+                  str(round(d_asset * 100, 2)) + '%', loc='right')
+
+        try:
+            plt.pause(1000)
+        except Exception:
+            print('waiting for next one....')
 
 
 def _load(start_data1, start_data2, code):
@@ -145,15 +169,15 @@ def _load(start_data1, start_data2, code):
     '''
     df_stock['Adj Close'] = df_stock['Close'] * \
         (df_stock['Stocks'] / latest_stocks)  # 수정종가
+
+    while isgoing:
+        time.sleep(1)
+
     stock_data = df_stock['Adj Close']
-
-    time.sleep(3)
-
-    print('stock data loaded')
 
 
 def show():
-    global stock_data
+    global stock_data, isgoing
     year = randrange(1995, 2018)
 
     if len(stock_data) == 0:
@@ -161,16 +185,13 @@ def show():
         _load(str(year) + '-01-01', str(year + 1) + '-12-31', '005930')
         year = randrange(1995, 2018)
 
-    # s = threading.Thread(target=_load, args=(
-    #     str(year) + '-01-01', str(year + 1) + '-12-31', '005930'))
-    # s.start()
+    s = threading.Thread(target=_load, args=(
+        str(year) + '-01-01', str(year + 1) + '-12-31', '005930'))
+    s.start()
+
+    isgoing = True
 
     ani = animation.FuncAnimation(fig, _animate, interval=100)
     plt.show()
 
-
-# 이걸로 실행해 보기...실행이 안됨
-# start_data1 = "2018-01-01"
-# start_data2 = "2018-12-31"
-# show()
-# _graph()
+    isgoing = False

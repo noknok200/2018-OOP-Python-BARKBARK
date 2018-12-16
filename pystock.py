@@ -4,7 +4,10 @@
 # The main module to be executed
 
 from plot_keybind import startstock
+from plot_core import initcore
 from time import sleep
 
-
-startstock()
+while True:
+    initcore()
+    sleep(1)
+    startstock()
