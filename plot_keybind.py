@@ -1,7 +1,6 @@
 """
 주식을 보여주는 그래프에 keyboard listener가 추가됨.
 """
-from __future__ import print_function
 import sys
 import plot_core
 
