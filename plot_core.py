@@ -8,7 +8,7 @@ import numpy as np
 import threading
 from random import randrange
 
-from oldfiles.calculate_asset import cal_asset
+from calculate_asset import cal_asset
 
 stock_data = []
 
@@ -129,8 +129,6 @@ def _animate(t):
             print(str(asset)+' '+str(d_asset*100))
         plt.title('final asset:'+str(asset), loc='left')
         plt.title('final rate: '+str(round(d_asset*100, 2))+'%', loc='right')
-
-        plt.pause(100000)
 
 
 def _load(start_data1, start_data2, code):

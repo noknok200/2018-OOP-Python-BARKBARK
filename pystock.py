@@ -7,7 +7,4 @@ from plot_keybind import startstock
 from time import sleep
 
 
-while True:
-    startstock()
-    # sleep(1)
-  
+startstock()
